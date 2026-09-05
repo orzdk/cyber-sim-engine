@@ -1,0 +1,5757 @@
+[
+  {
+    "card_id": "WNTC-001",
+    "statics": [
+      {
+        "kind": "SelfKeyword",
+        "keyword": "GO_SOLO"
+      }
+    ],
+    "onPlay": [
+      {
+        "action": "Defeat",
+        "target": {
+          "type": "Unit",
+          "side": "opponent",
+          "chooser": "controller",
+          "prompt": "Defeat a rival Unit"
+        }
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-077"
+  },
+  {
+    "card_id": "WNTC-025"
+  },
+  {
+    "card_id": "WNTC-005a",
+    "statics": [
+      {
+        "kind": "SelfKeyword",
+        "keyword": "GO_SOLO"
+      }
+    ],
+    "onCall": [
+      {
+        "action": "Mill",
+        "n": 3
+      },
+      {
+        "action": "RecoverFromTrash",
+        "target": {
+          "bind": "prog",
+          "type": "CardRef",
+          "zone": "trash",
+          "filter": {
+            "type": "Program",
+            "subtype_has": "Braindance"
+          },
+          "chooser": "controller"
+        }
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-004",
+    "statics": [
+      {
+        "kind": "SelfKeyword",
+        "keyword": "GO_SOLO"
+      },
+      {
+        "kind": "SelfPower",
+        "expr": {
+          "op": "mul",
+          "args": [
+            2,
+            {
+              "op": "gear_count"
+            }
+          ]
+        },
+        "when": {
+          "active_player": "self"
+        }
+      }
+    ]
+  },
+  {
+    "card_id": "EP-001",
+    "abilities": [
+      {
+        "kind": "triggered",
+        "trigger": {
+          "event": "OnCardAttacks",
+          "by": "controller",
+          "card": {
+            "faction": "Arasaka"
+          },
+          "rate_limit": "first_per_turn",
+          "rate_limit_scope": "controller"
+        },
+        "effect": [
+          {
+            "action": "Draw",
+            "n": 1
+          },
+          {
+            "action": "If",
+            "cond": {
+              "cond": "StreetCred",
+              "op": "<",
+              "value": 20
+            },
+            "then": [
+              {
+                "action": "Discard",
+                "n": 1,
+                "target": {
+                  "bind": "card",
+                  "type": "CardRef",
+                  "zone": "hand",
+                  "chooser": "controller"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-012",
+    "abilities": [
+      {
+        "kind": "spend_activated",
+        "trigger": {
+          "event": "Anytime"
+        },
+        "prompt": "Spend Kerry: if you control a Gig with 8+ value, draw 2.",
+        "cost": {
+          "spend": {
+            "from_self": true
+          }
+        },
+        "condition": {
+          "cond": "HasInZone",
+          "zone": "gigs",
+          "filter": {
+            "value_gte": 8
+          }
+        },
+        "effect": [
+          {
+            "action": "Draw",
+            "n": 2
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-014",
+    "statics": [
+      {
+        "kind": "SelfKeyword",
+        "keyword": "BLOCKER"
+      },
+      {
+        "kind": "SelfPower",
+        "expr": 2,
+        "when": {
+          "during_fight": true,
+          "vs_type": "Legend"
+        }
+      }
+    ],
+    "abilities": [
+      {
+        "kind": "triggered",
+        "trigger": {
+          "event": "OnGigValueChanged",
+          "by": "opponent"
+        },
+        "condition": {
+          "cond": "Compare",
+          "lhs": {
+            "op": "event_field",
+            "field": "gig_pid"
+          },
+          "op": "==",
+          "rhs": {
+            "op": "self_pid"
+          }
+        },
+        "effect": [
+          {
+            "action": "Optional",
+            "prompt": "Meredith: add a card from your trash to your hand?",
+            "body": [
+              {
+                "action": "RecoverFromTrash",
+                "target": {
+                  "bind": "card",
+                  "type": "CardRef",
+                  "zone": "trash",
+                  "chooser": "controller",
+                  "optional": true
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-009",
+    "abilities": [
+      {
+        "kind": "spend_activated",
+        "trigger": {
+          "event": "OnCardAttacks",
+          "by": "self",
+          "rate_limit": "first_per_turn",
+          "rate_limit_scope": "iid"
+        },
+        "prompt": "Pay 2 €$: gain power equal to a friendly max Gig this turn.",
+        "cost": {
+          "eddies": 2
+        },
+        "effect": [
+          {
+            "action": "SelectTarget",
+            "target": {
+              "bind": "g",
+              "type": "Gig",
+              "side": "friendly",
+              "filter": {
+                "value_eq_sides": true
+              },
+              "chooser": "controller",
+              "optional": true,
+              "prompt": "Choose a max Gig"
+            }
+          },
+          {
+            "action": "GrantTempPower",
+            "target": {
+              "from_self": true
+            },
+            "amount": {
+              "op": "gig_value",
+              "ref": "g"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-016",
+    "onPlay": [
+      {
+        "action": "If",
+        "cond": {
+          "cond": "Compare",
+          "lhs": {
+            "op": "street_cred",
+            "side": "self"
+          },
+          "op": ">",
+          "rhs": {
+            "op": "street_cred",
+            "side": "opponent"
+          }
+        },
+        "then": [
+          {
+            "action": "Defeat",
+            "target": {
+              "type": "Unit",
+              "side": "opponent",
+              "chooser": "controller",
+              "filter": {
+                "power_lte": 3
+              },
+              "prompt": "Defeat a rival unit (power ≤ 3)"
+            }
+          }
+        ],
+        "else": [
+          {
+            "action": "Defeat",
+            "target": {
+              "type": "Unit",
+              "side": "opponent",
+              "chooser": "controller",
+              "filter": {
+                "power_lte": 2
+              },
+              "prompt": "Defeat a rival unit (power ≤ 2)"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-030",
+    "playCostModifier": {
+      "discount": {
+        "op": "count",
+        "side": "self",
+        "zone": "gigs",
+        "filter": {
+          "value_gte": 8
+        }
+      },
+      "min": 1
+    },
+    "onPlay": [
+      {
+        "action": "Defeat",
+        "target": {
+          "type": "Unit",
+          "side": "opponent",
+          "chooser": "controller",
+          "filter": {
+            "power_lt_friendly_max": true
+          },
+          "prompt": "Defeat a rival unit weaker than one of your units"
+        }
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-036",
+    "onCall": [
+      {
+        "action": "Optional",
+        "body": [
+          {
+            "action": "DefeatGear",
+            "target": {
+              "bind": "gear",
+              "type": "Gear",
+              "side": "friendly",
+              "chooser": "controller"
+            }
+          }
+        ]
+      },
+      {
+        "action": "If",
+        "cond": {
+          "cond": "BindingSet",
+          "name": "gear"
+        },
+        "then": [
+          {
+            "action": "Draw",
+            "n": 2
+          }
+        ],
+        "else": [
+          {
+            "action": "Draw",
+            "n": 1
+          }
+        ]
+      }
+    ],
+    "abilities": [
+      {
+        "kind": "spend_activated",
+        "quick": true,
+        "trigger": {
+          "event": "Anytime"
+        },
+        "prompt": "Dum Dum: give a friendly Unit +1 power per equipped Gear this turn.",
+        "cost": {
+          "eddies": 1,
+          "spend": {
+            "from_self": true
+          }
+        },
+        "effect": [
+          {
+            "action": "GrantTempPower",
+            "target": {
+              "bind": "u",
+              "type": "Unit",
+              "side": "friendly",
+              "chooser": "controller"
+            },
+            "amount": {
+              "op": "gear_count",
+              "ref": "u"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-039",
+    "abilities": [
+      {
+        "kind": "spend_activated",
+        "quick": true,
+        "trigger": {
+          "event": "Anytime"
+        },
+        "prompt": "Play a Gear (cost ≤2) from your hand for free, equipped.",
+        "cost": {
+          "spend": {
+            "from_self": true
+          }
+        },
+        "effect": [
+          {
+            "action": "PlayGearFromZone",
+            "target": {
+              "type": "Gear",
+              "side": "friendly",
+              "zone": "hand",
+              "filter": {
+                "cost_lte": 2
+              },
+              "chooser": "controller"
+            },
+            "dest": {
+              "zone": "in_play",
+              "side": "friendly",
+              "chooser": "controller",
+              "prompt": "Equip to a friendly Unit or face-up Legend"
+            }
+          }
+        ]
+      },
+      {
+        "kind": "triggered",
+        "trigger": {
+          "event": "OnDefeated",
+          "by": "controller"
+        },
+        "condition": {
+          "cond": "Compare",
+          "lhs": {
+            "op": "event_field",
+            "field": "gear_count"
+          },
+          "op": ">",
+          "rhs": 0
+        },
+        "effect": [
+          {
+            "action": "ScryTrash",
+            "n": 2,
+            "trash_up_to": 1,
+            "min_take": 1,
+            "prompt": "River Ward: trash 1 of the top 2 cards"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "HEIST-001",
+    "onCall": [
+      {
+        "action": "SearchTopN",
+        "n": 5,
+        "take_up_to": 2,
+        "filter": {
+          "type": "Gear",
+          "cost_lte": 2
+        }
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-045",
+    "onPlay": [
+      {
+        "action": "Optional",
+        "prompt": "Gilded Matón: defeat a friendly Gear to defeat a rival Unit (cost ≤3)?",
+        "body": [
+          {
+            "action": "DefeatGear",
+            "target": {
+              "bind": "g",
+              "type": "Gear",
+              "side": "friendly",
+              "chooser": "controller"
+            }
+          },
+          {
+            "action": "If",
+            "cond": {
+              "cond": "BindingSet",
+              "name": "g"
+            },
+            "then": [
+              {
+                "action": "Defeat",
+                "target": {
+                  "bind": "u",
+                  "type": "Unit",
+                  "side": "opponent",
+                  "filter": {
+                    "cost_lte": 3
+                  },
+                  "chooser": "controller"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-046",
+    "onPlay": [
+      {
+        "action": "RevealTop",
+        "n": 4,
+        "bind": "revealed"
+      },
+      {
+        "action": "TakeFromBound",
+        "from": "revealed",
+        "filter": {
+          "cost_in": {
+            "op": "gig_values",
+            "side": "self"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-044",
+    "onPlay": [
+      {
+        "action": "Defeat",
+        "target": {
+          "type": "Unit",
+          "side": "opponent",
+          "chooser": "controller",
+          "filter": {
+            "cost_lte": 2
+          },
+          "prompt": "Defeat a rival Unit (cost ≤ 2)"
+        }
+      }
+    ],
+    "onDefeated": [
+      {
+        "action": "RivalDiscards",
+        "n": 1,
+        "bind": "first"
+      },
+      {
+        "action": "If",
+        "cond": {
+          "cond": "GigValueExists",
+          "side": "friendly",
+          "value": {
+            "op": "ref",
+            "name": "first.cost"
+          }
+        },
+        "then": [
+          {
+            "action": "RivalDiscards",
+            "n": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-041",
+    "onPlay": [
+      {
+        "action": "Defeat",
+        "target": {
+          "bind": "units",
+          "type": "Unit",
+          "side": "both",
+          "quantifier": "all",
+          "filter": {
+            "exclude_self": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-064",
+    "abilities": [
+      {
+        "kind": "triggered",
+        "trigger": {
+          "event": "OnSpent",
+          "by": "host"
+        },
+        "effect": [
+          {
+            "action": "SelectTarget",
+            "target": {
+              "bind": "gig",
+              "type": "Gig",
+              "side": "both",
+              "chooser": "controller",
+              "prompt": "Zetatech Faceplate: choose a Gig"
+            }
+          },
+          {
+            "action": "ChooseAmount",
+            "bind_to": "delta",
+            "min": 0,
+            "max": 1,
+            "chooser": "controller",
+            "prompt": "Zetatech Faceplate: adjust by 0 or 1"
+          },
+          {
+            "action": "AdjustGig",
+            "target": {
+              "from_binding": "gig"
+            },
+            "amount": {
+              "op": "ref",
+              "name": "delta"
+            }
+          },
+          {
+            "action": "If",
+            "cond": {
+              "cond": "DistinctGigValueCount",
+              "side": "self",
+              "op": ">=",
+              "value": 3
+            },
+            "then": [
+              {
+                "action": "Draw",
+                "n": 1
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-060",
+    "abilities": [
+      {
+        "kind": "triggered",
+        "trigger": {
+          "event": "OnStealGigs",
+          "by": "host",
+          "rate_limit": "first_per_turn",
+          "rate_limit_scope": "iid"
+        },
+        "effect": [
+          {
+            "action": "TransferGig",
+            "target": {
+              "bind": "gig",
+              "type": "Gig",
+              "side": "opponent",
+              "filter": {
+                "value_not_in": {
+                  "op": "gig_values",
+                  "side": "self"
+                }
+              },
+              "chooser": "controller"
+            },
+            "to": "controller"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-067",
+    "quick": true,
+    "onPlay": [
+      {
+        "action": "GrantTempPower",
+        "target": {
+          "bind": "unit",
+          "type": "Unit",
+          "side": "both",
+          "chooser": "controller",
+          "filter": {
+            "has_equipped_gear": true
+          }
+        },
+        "amount": {
+          "op": "mul",
+          "args": [
+            3,
+            {
+              "op": "gear_count",
+              "ref": "unit"
+            }
+          ]
+        }
+      },
+      {
+        "action": "ScheduleDefeat",
+        "target": {
+          "from_binding": "unit"
+        },
+        "condition": {
+          "cond": "SelfDidCombat"
+        }
+      }
+    ]
+  },
+  {
+    "card_id": "EP-012",
+    "statics": [
+      {
+        "kind": "SelfKeyword",
+        "keyword": "GO_SOLO"
+      },
+      {
+        "kind": "SelfKeyword",
+        "keyword": "BLOCKER"
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-071",
+    "abilities": [
+      {
+        "kind": "spend_activated",
+        "quick": true,
+        "trigger": {
+          "event": "Anytime"
+        },
+        "prompt": "Goro: give a friendly Unit (cost ≤4) Blocker this turn (+1 power with a value-pair).",
+        "cost": {
+          "eddies": 1,
+          "spend": {
+            "from_self": true
+          }
+        },
+        "effect": [
+          {
+            "action": "GrantTempKeyword",
+            "target": {
+              "bind": "u",
+              "type": "Unit",
+              "side": "friendly",
+              "filter": {
+                "cost_lte": 4
+              },
+              "chooser": "controller"
+            },
+            "keyword": "BLOCKER"
+          },
+          {
+            "action": "If",
+            "cond": {
+              "cond": "HasValuePair",
+              "side": "friendly"
+            },
+            "then": [
+              {
+                "action": "GrantTempPower",
+                "target": {
+                  "from_binding": "u"
+                },
+                "amount": 1
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "triggered",
+        "trigger": {
+          "event": "OnBlock",
+          "by": "controller"
+        },
+        "effect": [
+          {
+            "action": "Optional",
+            "prompt": "Goro: discard 1 to draw 1?",
+            "body": [
+              {
+                "action": "Discard",
+                "n": 1,
+                "target": {
+                  "bind": "d",
+                  "type": "CardRef",
+                  "zone": "hand",
+                  "chooser": "controller"
+                }
+              },
+              {
+                "action": "If",
+                "cond": {
+                  "cond": "BindingSet",
+                  "name": "d"
+                },
+                "then": [
+                  {
+                    "action": "Draw",
+                    "n": 1
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-075",
+    "abilities": [
+      {
+        "kind": "spend_activated",
+        "trigger": {
+          "event": "Anytime"
+        },
+        "prompt": "Panam: move a Gear from this Legend to an unequipped friendly Unit, then ready it.",
+        "cost": {
+          "eddies": 2,
+          "spend": {
+            "from_self": true
+          }
+        },
+        "effect": [
+          {
+            "action": "Equip",
+            "source": {
+              "bind": "gear",
+              "type": "Gear",
+              "equipped_to": {
+                "from_self": true
+              },
+              "chooser": "controller"
+            },
+            "dest": {
+              "bind": "host",
+              "type": "Unit",
+              "side": "friendly",
+              "filter": {
+                "gear_count": 0
+              },
+              "chooser": "controller"
+            }
+          },
+          {
+            "action": "Ready",
+            "target": {
+              "from_binding": "host"
+            }
+          }
+        ]
+      },
+      {
+        "kind": "triggered",
+        "trigger": {
+          "event": "OnEndTurn",
+          "by": "controller"
+        },
+        "condition": {
+          "cond": "Compare",
+          "lhs": {
+            "op": "add",
+            "args": [
+              {
+                "op": "count",
+                "zone": "field",
+                "filter": {
+                  "has_equipped_gear": true
+                }
+              },
+              {
+                "op": "count",
+                "zone": "legends",
+                "filter": {
+                  "has_equipped_gear": true
+                }
+              }
+            ]
+          },
+          "op": ">=",
+          "rhs": 5
+        },
+        "effect": [
+          {
+            "action": "Ready",
+            "target": {
+              "type": "Unit",
+              "side": "friendly",
+              "filter": {
+                "has_equipped_gear": true
+              },
+              "quantifier": "all"
+            }
+          },
+          {
+            "action": "Ready",
+            "target": {
+              "type": "Legend",
+              "side": "friendly",
+              "filter": {
+                "has_equipped_gear": true
+              },
+              "quantifier": "all"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "EP-013",
+    "statics": [
+      {
+        "kind": "Aura",
+        "affects": {
+          "side": "friendly",
+          "filter": {
+            "type": "Unit",
+            "faction": "Arasaka"
+          }
+        },
+        "expr": 1,
+        "when": {
+          "role": "attacker"
+        }
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-087",
+    "statics": [
+      {
+        "kind": "SelfKeyword",
+        "keyword": "ADRENALINE"
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-092",
+    "abilities": [
+      {
+        "kind": "triggered",
+        "trigger": {
+          "event": "OnStealGigs",
+          "by": "self"
+        },
+        "effect": [
+          {
+            "action": "Ready",
+            "target": {
+              "type": "Unit",
+              "side": "friendly",
+              "filter": {
+                "exclude_self": true,
+                "power_eq": {
+                  "op": "event_field",
+                  "field": "stolen_gigs[0].value"
+                }
+              },
+              "chooser": "controller"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-088",
+    "statics": [
+      {
+        "kind": "SelfKeyword",
+        "keyword": "HASTE_VS_SPENT"
+      }
+    ],
+    "onPlay": [
+      {
+        "action": "Spend",
+        "target": {
+          "bind": "targets",
+          "type": "Unit",
+          "side": "opponent",
+          "chooser": "controller",
+          "quantifier": "upto_n",
+          "n": {
+            "op": "value_pair_count",
+            "side": "self"
+          },
+          "prompt": "Spend rival units (one per friendly value-pair)"
+        }
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-101",
+    "onPlay": [
+      {
+        "action": "Optional",
+        "prompt": "Set a Gig's value to another Gig's value?",
+        "body": [
+          {
+            "action": "SelectTarget",
+            "target": {
+              "bind": "src",
+              "type": "Gig",
+              "side": "both",
+              "chooser": "controller",
+              "prompt": "Copy value FROM"
+            }
+          },
+          {
+            "action": "SetGigValue",
+            "target": {
+              "bind": "dst",
+              "type": "Gig",
+              "side": "both",
+              "filter": {
+                "exclude_binding": "src"
+              },
+              "chooser": "controller",
+              "prompt": "Set value ON"
+            },
+            "amount": {
+              "op": "gig_value",
+              "ref": "src"
+            }
+          },
+          {
+            "action": "If",
+            "cond": {
+              "cond": "HasValuePair",
+              "side": "self"
+            },
+            "then": [
+              {
+                "action": "Draw",
+                "n": 1
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-107",
+    "abilities": [
+      {
+        "kind": "triggered",
+        "trigger": {
+          "event": "OnStealGigs",
+          "by": "controller",
+          "card": {
+            "any_of": [
+              {
+                "faction": "Corpo"
+              },
+              {
+                "faction": "Ganger"
+              }
+            ]
+          }
+        },
+        "effect": [
+          {
+            "action": "ReadyEddie",
+            "n": 1
+          }
+        ]
+      },
+      {
+        "kind": "spend_activated",
+        "trigger": {
+          "event": "Anytime"
+        },
+        "prompt": "Evelyn: a rival Unit must attack next turn if it can.",
+        "cost": {
+          "eddies": 1,
+          "spend": {
+            "from_self": true
+          }
+        },
+        "effect": [
+          {
+            "action": "CompelAttack",
+            "target": {
+              "type": "Unit",
+              "side": "opponent",
+              "chooser": "controller"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "HEIST-011",
+    "abilities": [
+      {
+        "kind": "triggered",
+        "trigger": {
+          "event": "OnCardPlayed",
+          "by": "controller",
+          "card": {
+            "color": "Blue",
+            "any_of": [
+              {
+                "type": "Unit"
+              },
+              {
+                "type": "Gear"
+              }
+            ]
+          },
+          "rate_limit": "first_per_turn",
+          "rate_limit_scope": "controller"
+        },
+        "effect": [
+          {
+            "action": "Optional",
+            "prompt": "Jackie: decrease a friendly Gig by up to 2?",
+            "body": [
+              {
+                "action": "SelectTarget",
+                "target": {
+                  "bind": "g",
+                  "type": "Gig",
+                  "side": "friendly",
+                  "chooser": "controller",
+                  "prompt": "Jackie: choose a Gig to decrease"
+                }
+              },
+              {
+                "action": "ChooseAmount",
+                "bind_to": "d",
+                "min": 1,
+                "max": 2,
+                "prompt": "Decrease by 1 or 2"
+              },
+              {
+                "action": "DecreaseGig",
+                "target": {
+                  "bind": "g"
+                },
+                "amount": {
+                  "op": "ref",
+                  "name": "d"
+                }
+              },
+              {
+                "action": "If",
+                "cond": {
+                  "cond": "And",
+                  "args": [
+                    {
+                      "cond": "Compare",
+                      "lhs": {
+                        "op": "gig_value",
+                        "ref": "g"
+                      },
+                      "op": "==",
+                      "rhs": 1
+                    },
+                    {
+                      "cond": "Compare",
+                      "lhs": {
+                        "op": "ref",
+                        "name": "g.prev_value"
+                      },
+                      "op": "!=",
+                      "rhs": 1
+                    }
+                  ]
+                },
+                "then": [
+                  {
+                    "action": "Draw",
+                    "n": 1
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-120",
+    "statics": [
+      {
+        "kind": "SelfKeyword",
+        "keyword": "ADRENALINE"
+      }
+    ],
+    "abilities": [
+      {
+        "kind": "triggered",
+        "trigger": {
+          "event": "OnEndTurn",
+          "by": "controller"
+        },
+        "effect": [
+          {
+            "action": "ReturnToHand",
+            "target": {
+              "from_self": true
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-123",
+    "onPlay": [
+      {
+        "action": "Optional",
+        "body": [
+          {
+            "action": "Discard",
+            "n": 1,
+            "target": {
+              "bind": "prog",
+              "type": "CardRef",
+              "zone": "hand",
+              "filter": {
+                "type": "Program"
+              },
+              "chooser": "controller"
+            }
+          }
+        ]
+      },
+      {
+        "action": "If",
+        "cond": {
+          "cond": "BindingSet",
+          "name": "prog"
+        },
+        "then": [
+          {
+            "action": "BottomDeckFromField",
+            "target": {
+              "bind": "unit",
+              "type": "Unit",
+              "side": "opponent",
+              "chooser": "controller"
+            }
+          }
+        ]
+      }
+    ],
+    "abilities": [
+      {
+        "kind": "triggered",
+        "trigger": {
+          "event": "OnCardAttacks",
+          "by": "self"
+        },
+        "effect": [
+          {
+            "action": "Optional",
+            "body": [
+              {
+                "action": "Discard",
+                "n": 1,
+                "target": {
+                  "bind": "prog",
+                  "type": "CardRef",
+                  "zone": "hand",
+                  "filter": {
+                    "type": "Program"
+                  },
+                  "chooser": "controller"
+                }
+              }
+            ]
+          },
+          {
+            "action": "If",
+            "cond": {
+              "cond": "BindingSet",
+              "name": "prog"
+            },
+            "then": [
+              {
+                "action": "BottomDeckFromField",
+                "target": {
+                  "bind": "unit",
+                  "type": "Unit",
+                  "side": "opponent",
+                  "chooser": "controller"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-131",
+    "onPlay": [
+      {
+        "action": "GrantTempKeyword",
+        "target": {
+          "bind": "rival",
+          "type": "Unit",
+          "side": "opponent",
+          "chooser": "controller"
+        },
+        "keyword": "CANNOT_ATTACK",
+        "until": "controller_next_turn"
+      },
+      {
+        "action": "If",
+        "cond": {
+          "cond": "And",
+          "args": [
+            {
+              "cond": "HasInZone",
+              "side": "self",
+              "zone": "gigs",
+              "filter": {
+                "value": 1
+              }
+            },
+            {
+              "cond": "CanCallLegend"
+            }
+          ]
+        },
+        "then": [
+          {
+            "action": "Optional",
+            "prompt": "Chrome Reverie: Call a Legend for free?",
+            "body": [
+              {
+                "action": "CallLegend"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-027",
+    "onPlay": [
+      {
+        "action": "Mill",
+        "n": 3,
+        "bind": "milled"
+      },
+      {
+        "action": "RecoverFromTrash",
+        "target": {
+          "bind": "unit",
+          "type": "CardRef",
+          "zone": "trash",
+          "filter": {
+            "type": "Unit",
+            "in_binding": "milled"
+          },
+          "chooser": "controller",
+          "prompt": "Add a Unit from among the trashed cards to your hand"
+        }
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-051",
+    "onPlay": [
+      {
+        "action": "SpendSelf"
+      },
+      {
+        "action": "Spend",
+        "target": {
+          "bind": "rival",
+          "type": "Unit",
+          "side": "opponent",
+          "chooser": "controller",
+          "prompt": "Spend a rival Unit"
+        }
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-066",
+    "onPlay": [
+      {
+        "action": "SellTopCard"
+      },
+      {
+        "action": "If",
+        "cond": {
+          "cond": "And",
+          "args": [
+            {
+              "cond": "HasInZone",
+              "side": "self",
+              "zone": "gigs",
+              "filter": {
+                "value_parity": "even"
+              }
+            },
+            {
+              "cond": "HasInZone",
+              "side": "self",
+              "zone": "gigs",
+              "filter": {
+                "value_parity": "odd"
+              }
+            }
+          ]
+        },
+        "then": [
+          {
+            "action": "Draw",
+            "n": 2
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "EP-003",
+    "onPlay": [
+      {
+        "action": "If",
+        "cond": {
+          "cond": "Compare",
+          "lhs": {
+            "op": "street_cred",
+            "side": "self"
+          },
+          "op": ">",
+          "rhs": {
+            "op": "street_cred",
+            "side": "opponent"
+          }
+        },
+        "then": [
+          {
+            "action": "Defeat",
+            "target": {
+              "bind": "u",
+              "type": "Unit",
+              "side": "opponent",
+              "filter": {
+                "power_lte": 5
+              },
+              "chooser": "controller",
+              "prompt": "Defeat a rival Unit (power 5 or less)"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-019",
+    "abilities": [
+      {
+        "kind": "triggered",
+        "trigger": {
+          "event": "OnCardAttacks",
+          "by": "self"
+        },
+        "effect": [
+          {
+            "action": "If",
+            "cond": {
+              "cond": "Compare",
+              "lhs": {
+                "op": "self_power"
+              },
+              "op": ">=",
+              "rhs": 5
+            },
+            "then": [
+              {
+                "action": "Draw",
+                "n": 1
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-026",
+    "abilities": [
+      {
+        "kind": "triggered",
+        "trigger": {
+          "event": "OnWinFight",
+          "by": "host"
+        },
+        "effect": [
+          {
+            "action": "Draw",
+            "n": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-053",
+    "statics": [
+      {
+        "kind": "SelfKeyword",
+        "keyword": "BLOCKER"
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-055",
+    "onDefeated": [
+      {
+        "action": "MarkPeeked",
+        "target": {
+          "type": "Legend",
+          "side": "friendly",
+          "face": "face_down",
+          "quantifier": "all"
+        }
+      },
+      {
+        "action": "If",
+        "cond": {
+          "cond": "CanCallLegend"
+        },
+        "then": [
+          {
+            "action": "Optional",
+            "prompt": "T-Bug: Call a Legend for free?",
+            "body": [
+              {
+                "action": "CallLegend"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-048",
+    "abilities": [
+      {
+        "kind": "triggered",
+        "trigger": {
+          "event": "OnCardAttacks",
+          "by": "self"
+        },
+        "effect": [
+          {
+            "action": "GrantTempPower",
+            "target": {
+              "from_self": true
+            },
+            "amount": {
+              "op": "mul",
+              "args": [
+                2,
+                {
+                  "op": "count",
+                  "side": "self",
+                  "zone": "gigs",
+                  "filter": {
+                    "value_parity": "even"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    ],
+    "onDefeated": [
+      {
+        "action": "Draw",
+        "n": {
+          "op": "count",
+          "side": "self",
+          "zone": "gigs",
+          "filter": {
+            "value_parity": "odd"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-061",
+    "abilities": [
+      {
+        "kind": "triggered",
+        "trigger": {
+          "event": "OnCardAttacks",
+          "by": "host"
+        },
+        "effect": [
+          {
+            "action": "MarkPeeked",
+            "target": {
+              "bind": "leg",
+              "type": "Legend",
+              "side": "friendly",
+              "face": "face_down",
+              "chooser": "controller",
+              "optional": true,
+              "prompt": "Look at a friendly face-down Legend"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-062",
+    "statics": [
+      {
+        "kind": "AuraKeyword",
+        "affects": {
+          "is": "equipped_host"
+        },
+        "keyword": "BLOCKER"
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-065",
+    "onPlay": [
+      {
+        "action": "SelectTarget",
+        "target": {
+          "bind": "g",
+          "type": "Gig",
+          "side": "both",
+          "chooser": "controller",
+          "optional": true,
+          "prompt": "Choose a Gig to adjust"
+        }
+      },
+      {
+        "action": "ChooseAmount",
+        "bind_to": "d",
+        "min": 0,
+        "max": 1,
+        "chooser": "controller",
+        "prompt": "Adjust by 0 or 1"
+      },
+      {
+        "action": "AdjustGig",
+        "target": {
+          "from_binding": "g"
+        },
+        "amount": {
+          "op": "ref",
+          "name": "d"
+        }
+      },
+      {
+        "action": "If",
+        "cond": {
+          "cond": "DistinctGigValueCount",
+          "side": "self",
+          "op": ">=",
+          "value": 2
+        },
+        "then": [
+          {
+            "action": "Draw",
+            "n": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-076",
+    "statics": [
+      {
+        "kind": "SelfKeyword",
+        "keyword": "CANNOT_ATTACK"
+      },
+      {
+        "kind": "SelfKeyword",
+        "keyword": "BLOCKER"
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-095",
+    "abilities": [
+      {
+        "kind": "triggered",
+        "trigger": {
+          "event": "OnEndTurn",
+          "by": "controller"
+        },
+        "effect": [
+          {
+            "action": "Ready",
+            "target": {
+              "from_host": true
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-097",
+    "onPlay": [
+      {
+        "action": "Spend",
+        "target": {
+          "bind": "u",
+          "type": "Unit",
+          "side": "opponent",
+          "filter": {
+            "cost_lte": 4
+          },
+          "chooser": "controller",
+          "prompt": "Spend a rival Unit (cost 4 or less)"
+        }
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-113",
+    "abilities": [
+      {
+        "kind": "triggered",
+        "trigger": {
+          "event": "OnCardAttacks",
+          "by": "self"
+        },
+        "effect": [
+          {
+            "action": "Draw",
+            "n": 1
+          },
+          {
+            "action": "If",
+            "cond": {
+              "cond": "Compare",
+              "lhs": {
+                "op": "street_cred",
+                "side": "self"
+              },
+              "op": ">",
+              "rhs": {
+                "op": "street_cred",
+                "side": "opponent"
+              }
+            },
+            "then": [
+              {
+                "action": "Discard",
+                "n": 1,
+                "target": {
+                  "bind": "d",
+                  "type": "CardRef",
+                  "zone": "hand",
+                  "chooser": "controller",
+                  "prompt": "Discard a card"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "HEIST-015",
+    "statics": [
+      {
+        "kind": "SelfKeyword",
+        "keyword": "UNBLOCKABLE",
+        "condition": {
+          "cond": "Compare",
+          "lhs": {
+            "op": "street_cred",
+            "side": "self"
+          },
+          "op": "<",
+          "rhs": {
+            "op": "street_cred",
+            "side": "opponent"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-128",
+    "abilities": [
+      {
+        "kind": "triggered",
+        "trigger": {
+          "event": "OnCardAttacks",
+          "by": "host"
+        },
+        "effect": [
+          {
+            "action": "SelectTarget",
+            "target": {
+              "bind": "g",
+              "type": "Gig",
+              "side": "both",
+              "chooser": "controller",
+              "optional": true,
+              "prompt": "Choose a Gig to decrease"
+            }
+          },
+          {
+            "action": "ChooseAmount",
+            "bind_to": "d",
+            "min": 0,
+            "max": 2,
+            "chooser": "controller",
+            "prompt": "Decrease by up to 2"
+          },
+          {
+            "action": "DecreaseGig",
+            "target": {
+              "from_binding": "g"
+            },
+            "amount": {
+              "op": "ref",
+              "name": "d"
+            }
+          }
+        ]
+      },
+      {
+        "kind": "triggered",
+        "trigger": {
+          "event": "OnEndTurn",
+          "by": "controller"
+        },
+        "condition": {
+          "cond": "HostNamed",
+          "name": "V"
+        },
+        "effect": [
+          {
+            "action": "ReadyEddie",
+            "n": 2
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-132",
+    "quick": true,
+    "onPlay": [
+      {
+        "action": "GrantTempPower",
+        "target": {
+          "bind": "u",
+          "type": "Unit",
+          "side": "opponent",
+          "chooser": "controller",
+          "prompt": "Give a rival Unit -1 power"
+        },
+        "amount": -1
+      },
+      {
+        "action": "Draw",
+        "n": 1
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-103",
+    "quick": true,
+    "onPlay": [
+      {
+        "action": "SelectTarget",
+        "target": {
+          "bind": "u",
+          "type": "Unit",
+          "side": "opponent",
+          "chooser": "controller",
+          "optional": true,
+          "prompt": "Choose a rival Unit (steals 1 fewer Gig this turn)"
+        }
+      },
+      {
+        "action": "ModifyStealCount",
+        "target": {
+          "from_binding": "u"
+        },
+        "amount": -1
+      },
+      {
+        "action": "If",
+        "cond": {
+          "cond": "BoundMatches",
+          "ref": "u",
+          "filter": {
+            "any_of": [
+              {
+                "subtype_has": "AI"
+              },
+              {
+                "subtype_has": "Drone"
+              },
+              {
+                "subtype_has": "Vehicle"
+              }
+            ]
+          }
+        },
+        "then": [
+          {
+            "action": "Draw",
+            "n": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-054",
+    "abilities": [
+      {
+        "kind": "triggered",
+        "trigger": {
+          "event": "OnCardAttacks",
+          "by": "self"
+        },
+        "effect": [
+          {
+            "action": "SearchTopN",
+            "n": 3,
+            "take_up_to": 1,
+            "filter": {
+              "type": "Gear"
+            },
+            "trash_remainder": false,
+            "prompt": "Sketchy Ripper: reveal a Gear and add it to your hand"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-117",
+    "statics": [
+      {
+        "kind": "SelfKeyword",
+        "keyword": "BLOCKER"
+      }
+    ],
+    "onPlay": [
+      {
+        "action": "Optional",
+        "prompt": "Lizzy Wizzy: play a Program (cost ≤3) from hand or trash for free?",
+        "body": [
+          {
+            "action": "PlayFromZone",
+            "target": {
+              "type": "Program",
+              "side": "self",
+              "zone": "hand_or_trash",
+              "filter": {
+                "cost_lte": 3
+              },
+              "chooser": "controller",
+              "prompt": "Choose a Program (cost ≤3) from hand or trash"
+            },
+            "to": "deck"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-006",
+    "abilities": [
+      {
+        "kind": "triggered",
+        "trigger": {
+          "event": "OnStealGigs",
+          "by": "controller"
+        },
+        "condition": {
+          "cond": "Compare",
+          "lhs": {
+            "op": "event_field",
+            "field": "stolen_gigs[0].sides"
+          },
+          "op": "==",
+          "rhs": 6
+        },
+        "effect": [
+          {
+            "action": "Optional",
+            "prompt": "6th Street Recruits: increase a Gig by up to 6?",
+            "body": [
+              {
+                "action": "SelectTarget",
+                "target": {
+                  "bind": "g",
+                  "type": "Gig",
+                  "side": "friendly",
+                  "chooser": "controller",
+                  "prompt": "6th Street Recruits: choose a Gig to increase"
+                }
+              },
+              {
+                "action": "ChooseAmount",
+                "bind_to": "amt",
+                "min": 1,
+                "max": 6,
+                "prompt": "Increase by how much?"
+              },
+              {
+                "action": "IncreaseGig",
+                "target": {
+                  "from_binding": "g"
+                },
+                "amount": {
+                  "op": "ref",
+                  "name": "amt"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-093",
+    "abilities": [
+      {
+        "kind": "spend_activated",
+        "quick": true,
+        "trigger": {
+          "event": "Anytime"
+        },
+        "prompt": "Overwatch: pay 1€$, discard a card, defeat a spent rival Unit costing ≤ that card.",
+        "cost": {
+          "eddies": 1,
+          "spend": {
+            "from_self": true
+          }
+        },
+        "effect": [
+          {
+            "action": "SelectTarget",
+            "target": {
+              "bind": "dc",
+              "type": "CardRef",
+              "zone": "hand",
+              "side": "self",
+              "chooser": "controller",
+              "prompt": "Overwatch: choose a card to discard"
+            }
+          },
+          {
+            "action": "Discard",
+            "target": {
+              "from_binding": "dc"
+            }
+          },
+          {
+            "action": "Defeat",
+            "target": {
+              "type": "Unit",
+              "side": "opponent",
+              "chooser": "controller",
+              "prompt": "Overwatch: defeat a spent rival Unit",
+              "filter": {
+                "state": "spent",
+                "cost_lte": {
+                  "op": "card_cost",
+                  "ref": "dc"
+                }
+              }
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-119",
+    "statics": [
+      {
+        "kind": "SelfKeyword",
+        "keyword": "CANNOT_ATTACK"
+      }
+    ],
+    "abilities": [
+      {
+        "kind": "triggered",
+        "trigger": {
+          "event": "OnEndTurn",
+          "by": "controller"
+        },
+        "effect": [
+          {
+            "action": "ChooseCardType",
+            "bind": "misty_type",
+            "prompt": "Misty Olszewski: choose a card type"
+          },
+          {
+            "action": "RevealTop",
+            "n": 1,
+            "bind": "misty_top"
+          },
+          {
+            "action": "AckReveal",
+            "from": "misty_top"
+          },
+          {
+            "action": "If",
+            "cond": {
+              "cond": "BoundMatches",
+              "ref": "misty_top",
+              "filter": {
+                "type_eq": {
+                  "op": "binding",
+                  "name": "misty_type"
+                }
+              }
+            },
+            "then": [
+              {
+                "action": "ReadyEddie",
+                "n": 1
+              }
+            ]
+          },
+          {
+            "action": "TakeFromBound",
+            "from": "misty_top",
+            "filter": {
+              "type_eq": {
+                "op": "binding",
+                "name": "misty_type"
+              }
+            },
+            "trash_remainder": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "HEIST-012",
+    "statics": [
+      {
+        "kind": "SelfKeyword",
+        "keyword": "GO_SOLO"
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-122",
+    "statics": [
+      {
+        "kind": "SelfKeyword",
+        "keyword": "BLOCKER"
+      }
+    ],
+    "onPlay": [
+      {
+        "action": "CompelAttack",
+        "target": {
+          "type": "Unit",
+          "side": "opponent",
+          "chooser": "controller"
+        }
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-037",
+    "abilities": [
+      {
+        "kind": "triggered",
+        "trigger": {
+          "event": "OnGigRolled",
+          "by": "controller"
+        },
+        "effect": [
+          {
+            "action": "Optional",
+            "prompt": "Kerry: ignore the result and reroll this Gig once?",
+            "body": [
+              {
+                "action": "RerollGig"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "triggered",
+        "trigger": {
+          "event": "OnGigRolled",
+          "by": "controller"
+        },
+        "condition": {
+          "cond": "IsMinOrMax",
+          "value": {
+            "op": "event_field",
+            "field": "value"
+          },
+          "sides": {
+            "op": "event_field",
+            "field": "sides"
+          }
+        },
+        "effect": [
+          {
+            "action": "If",
+            "cond": {
+              "cond": "Compare",
+              "lhs": {
+                "op": "event_field",
+                "field": "sides"
+              },
+              "op": "==",
+              "rhs": 20
+            },
+            "then": [
+              {
+                "action": "Draw",
+                "n": 3
+              }
+            ],
+            "else": [
+              {
+                "action": "Draw",
+                "n": 1
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-013",
+    "statics": [
+      {
+        "kind": "SelfKeyword",
+        "keyword": "BLOCKER"
+      }
+    ],
+    "abilities": [
+      {
+        "kind": "triggered",
+        "trigger": {
+          "event": "OnBlock",
+          "by": "self"
+        },
+        "effect": [
+          {
+            "action": "SelectTarget",
+            "target": {
+              "bind": "g",
+              "type": "Gig",
+              "side": "friendly",
+              "chooser": "controller",
+              "optional": true,
+              "prompt": "La Llorona: choose a Gig to increase"
+            }
+          },
+          {
+            "action": "ChooseAmount",
+            "bind_to": "d",
+            "min": 0,
+            "max": 3,
+            "chooser": "controller",
+            "prompt": "Increase by up to 3"
+          },
+          {
+            "action": "IncreaseGig",
+            "target": {
+              "from_binding": "g"
+            },
+            "amount": {
+              "op": "ref",
+              "name": "d"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-089",
+    "statics": [
+      {
+        "kind": "Aura",
+        "affects": {
+          "side": "friendly",
+          "exclude_self": true,
+          "filter": {
+            "type": "Unit"
+          }
+        },
+        "expr": 2,
+        "when": {
+          "role": "attacker"
+        }
+      }
+    ],
+    "abilities": [
+      {
+        "kind": "triggered",
+        "trigger": {
+          "event": "OnEndTurn",
+          "by": "controller"
+        },
+        "effect": [
+          {
+            "action": "Ready",
+            "target": {
+              "type": "Unit",
+              "side": "friendly",
+              "quantifier": "upto_n",
+              "n": 3,
+              "chooser": "controller",
+              "prompt": "Saul Bright: ready up to 3 friendly Units"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-022",
+    "onPlay": [
+      {
+        "action": "Optional",
+        "prompt": "Steel Dragon: play a Unit (cost ≤4) from hand or trash for free?",
+        "body": [
+          {
+            "action": "PlayFromZone",
+            "target": {
+              "bind": "played",
+              "type": "Unit",
+              "side": "self",
+              "zone": "hand_or_trash",
+              "filter": {
+                "cost_lte": 4
+              },
+              "chooser": "controller",
+              "optional": true,
+              "prompt": "Choose a Unit (cost ≤4) from hand or trash"
+            },
+            "to": "field"
+          },
+          {
+            "action": "GrantTempKeyword",
+            "target": {
+              "from_binding": "played"
+            },
+            "keyword": "HASTE_VS_SPENT"
+          }
+        ]
+      }
+    ],
+    "abilities": [
+      {
+        "kind": "triggered",
+        "trigger": {
+          "event": "OnDefeated",
+          "by": "controller",
+          "card": {
+            "type": "Unit",
+            "faction": "Arasaka"
+          },
+          "rate_limit": "first_per_turn",
+          "rate_limit_scope": "controller"
+        },
+        "effect": [
+          {
+            "action": "Draw",
+            "n": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-018",
+    "onDefeated": [
+      {
+        "action": "RecoverFromTrash",
+        "target": {
+          "type": "Unit",
+          "side": "self",
+          "zone": "trash",
+          "filter": {
+            "exclude_self": true
+          },
+          "chooser": "controller",
+          "prompt": "Screw: add another Unit from your trash to your hand"
+        }
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-033",
+    "onPlay": [
+      {
+        "action": "SelectTarget",
+        "target": {
+          "bind": "g",
+          "type": "Gig",
+          "side": "friendly",
+          "chooser": "controller",
+          "optional": true,
+          "prompt": "Industrial Assembly: choose a Gig to increase"
+        }
+      },
+      {
+        "action": "If",
+        "cond": {
+          "cond": "BindingSet",
+          "name": "g"
+        },
+        "then": [
+          {
+            "action": "ChooseAmount",
+            "bind_to": "amt",
+            "min": 1,
+            "max": 4,
+            "chooser": "controller",
+            "prompt": "Increase by how much?"
+          },
+          {
+            "action": "IncreaseGig",
+            "target": {
+              "from_binding": "g"
+            },
+            "amount": {
+              "op": "ref",
+              "name": "amt"
+            }
+          }
+        ]
+      },
+      {
+        "action": "If",
+        "cond": {
+          "cond": "HasInZone",
+          "side": "self",
+          "zone": "gigs",
+          "filter": {
+            "value_gte": 8
+          }
+        },
+        "then": [
+          {
+            "action": "Draw",
+            "n": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-034",
+    "onPlay": [
+      {
+        "action": "SelectTarget",
+        "target": {
+          "bind": "d20",
+          "type": "Gig",
+          "side": "friendly",
+          "filter": {
+            "sides": 20
+          },
+          "chooser": "controller",
+          "optional": true,
+          "prompt": "Over the Edge: choose a friendly d20"
+        }
+      },
+      {
+        "action": "If",
+        "cond": {
+          "cond": "BindingSet",
+          "name": "d20"
+        },
+        "then": [
+          {
+            "action": "Defeat",
+            "target": {
+              "type": "Unit",
+              "side": "both",
+              "filter": {
+                "power_lte": {
+                  "op": "gig_value",
+                  "ref": "d20"
+                }
+              },
+              "chooser": "controller",
+              "optional": true,
+              "prompt": "Over the Edge: defeat a Unit with power ≤ the d20's value"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "HEIST-002",
+    "onPlay": [
+      {
+        "action": "SelectTarget",
+        "target": {
+          "bind": "gig",
+          "type": "Gig",
+          "side": "both",
+          "chooser": "controller",
+          "optional": true,
+          "prompt": "Dexter DeShawn: choose a Gig to adjust"
+        }
+      },
+      {
+        "action": "If",
+        "cond": {
+          "cond": "BindingSet",
+          "name": "gig"
+        },
+        "then": [
+          {
+            "action": "ChooseAmount",
+            "bind_to": "delta",
+            "min": 0,
+            "max": 1,
+            "chooser": "controller",
+            "prompt": "Dexter DeShawn: adjust by 0 or 1"
+          },
+          {
+            "action": "AdjustGig",
+            "target": {
+              "from_binding": "gig"
+            },
+            "amount": {
+              "op": "ref",
+              "name": "delta"
+            }
+          }
+        ]
+      }
+    ],
+    "abilities": [
+      {
+        "kind": "triggered",
+        "trigger": {
+          "event": "OnCardAttacks",
+          "by": "self"
+        },
+        "effect": [
+          {
+            "action": "SelectTarget",
+            "target": {
+              "bind": "gig",
+              "type": "Gig",
+              "side": "both",
+              "chooser": "controller",
+              "optional": true,
+              "prompt": "Dexter DeShawn: choose a Gig to adjust"
+            }
+          },
+          {
+            "action": "If",
+            "cond": {
+              "cond": "BindingSet",
+              "name": "gig"
+            },
+            "then": [
+              {
+                "action": "ChooseAmount",
+                "bind_to": "delta",
+                "min": 0,
+                "max": 1,
+                "chooser": "controller",
+                "prompt": "Dexter DeShawn: adjust by 0 or 1"
+              },
+              {
+                "action": "AdjustGig",
+                "target": {
+                  "from_binding": "gig"
+                },
+                "amount": {
+                  "op": "ref",
+                  "name": "delta"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "onDefeated": [
+      {
+        "action": "If",
+        "cond": {
+          "cond": "Or",
+          "args": [
+            {
+              "cond": "Compare",
+              "lhs": {
+                "op": "sub",
+                "args": [
+                  {
+                    "op": "street_cred",
+                    "side": "self"
+                  },
+                  {
+                    "op": "street_cred",
+                    "side": "opponent"
+                  }
+                ]
+              },
+              "op": ">=",
+              "rhs": 10
+            },
+            {
+              "cond": "Compare",
+              "lhs": {
+                "op": "sub",
+                "args": [
+                  {
+                    "op": "street_cred",
+                    "side": "opponent"
+                  },
+                  {
+                    "op": "street_cred",
+                    "side": "self"
+                  }
+                ]
+              },
+              "op": ">=",
+              "rhs": 10
+            }
+          ]
+        },
+        "then": [
+          {
+            "action": "Draw",
+            "n": 2
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-058",
+    "onPlay": [
+      {
+        "action": "PlayGearFromZone",
+        "target": {
+          "type": "Gear",
+          "side": "self",
+          "zone": "trash",
+          "filter": {
+            "faction": "Cyberware",
+            "cost_lte": 2
+          },
+          "chooser": "controller",
+          "prompt": "Viktor Vektor: play a CYBERWARE Gear (cost ≤2) from your trash"
+        },
+        "dest": {
+          "type": "Unit",
+          "side": "friendly",
+          "filter": {
+            "exclude_self": true
+          },
+          "chooser": "controller",
+          "prompt": "Viktor Vektor: equip it to another friendly Unit"
+        }
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-078",
+    "onPlay": [
+      {
+        "action": "If",
+        "cond": {
+          "cond": "Compare",
+          "lhs": {
+            "op": "mod",
+            "args": [
+              {
+                "op": "street_cred",
+                "side": "self"
+              },
+              2
+            ]
+          },
+          "op": "==",
+          "rhs": 0
+        },
+        "then": [
+          {
+            "action": "Draw",
+            "n": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "EP-017",
+    "abilities": [
+      {
+        "kind": "triggered",
+        "trigger": {
+          "event": "OnCardAttacks",
+          "by": "self"
+        },
+        "condition": {
+          "cond": "And",
+          "args": [
+            {
+              "cond": "Compare",
+              "lhs": {
+                "op": "legend_face_count",
+                "side": "self",
+                "face": "face_down"
+              },
+              "op": "==",
+              "rhs": 0
+            },
+            {
+              "cond": "Compare",
+              "lhs": {
+                "op": "legend_face_count",
+                "side": "self",
+                "face": "face_up"
+              },
+              "op": ">=",
+              "rhs": 1
+            }
+          ]
+        },
+        "effect": [
+          {
+            "action": "GrantTempPower",
+            "target": {
+              "from_self": true
+            },
+            "amount": 5
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-083",
+    "statics": [
+      {
+        "kind": "SelfKeyword",
+        "keyword": "HASTE_VS_GIGS",
+        "condition": {
+          "cond": "Compare",
+          "lhs": {
+            "op": "gig_count",
+            "side": "opponent"
+          },
+          "op": ">",
+          "rhs": {
+            "op": "gig_count",
+            "side": "self"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-109",
+    "statics": [
+      {
+        "kind": "SelfKeyword",
+        "keyword": "GO_SOLO"
+      }
+    ],
+    "abilities": [
+      {
+        "kind": "triggered",
+        "trigger": {
+          "event": "OnCardAttacks",
+          "by": "self"
+        },
+        "effect": [
+          {
+            "action": "RevealTop",
+            "n": 1,
+            "bind": "top"
+          },
+          {
+            "action": "GrantTempPower",
+            "target": {
+              "from_self": true
+            },
+            "amount": {
+              "op": "card_cost",
+              "ref": "top"
+            }
+          },
+          {
+            "action": "TakeFromBound",
+            "from": "top"
+          }
+        ]
+      }
+    ],
+    "onDefeated": [
+      {
+        "action": "RivalDiscards",
+        "n": 1
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-112",
+    "abilities": [
+      {
+        "kind": "triggered",
+        "trigger": {
+          "event": "OnEndTurn",
+          "by": "controller"
+        },
+        "condition": {
+          "cond": "SelfStoleGig"
+        },
+        "effect": [
+          {
+            "action": "ReadyEddie",
+            "n": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-136",
+    "quick": true,
+    "onPlay": [
+      {
+        "action": "PreventFightDefeat"
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-115",
+    "statics": [
+      {
+        "kind": "SelfKeyword",
+        "keyword": "CANNOT_ATTACK",
+        "condition": {
+          "cond": "Not",
+          "arg": {
+            "cond": "PlayedProgramThisTurn"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-043",
+    "statics": [
+      {
+        "kind": "SelfKeyword",
+        "keyword": "BLOCKER"
+      }
+    ],
+    "abilities": [
+      {
+        "kind": "triggered",
+        "trigger": {
+          "event": "OnBlock",
+          "by": "self"
+        },
+        "effect": [
+          {
+            "action": "RivalDiscards",
+            "n": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-099",
+    "onPlay": [
+      {
+        "action": "RevealTop",
+        "n": 2,
+        "bind": "top_two"
+      },
+      {
+        "action": "AckReveal",
+        "from": "top_two"
+      },
+      {
+        "action": "Optional",
+        "chooser": "opponent",
+        "reveal_from": "top_two",
+        "accept_label": "TRASH",
+        "decline_label": "KEEP",
+        "prompt": "Your rival revealed 2 cards from their deck. TRASH them and they draw 2, or KEEP them and they go to their hand.",
+        "body": [
+          {
+            "action": "TakeFromBound",
+            "from": "top_two",
+            "take_none": true,
+            "trash_remainder": true
+          },
+          {
+            "action": "Draw",
+            "n": 2
+          }
+        ],
+        "otherwise": [
+          {
+            "action": "TakeFromBound",
+            "from": "top_two"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-028",
+    "onPlay": [
+      {
+        "action": "AddBadge",
+        "trigger": {
+          "event": "OnWinFight",
+          "by": "controller"
+        },
+        "condition": {
+          "cond": "Compare",
+          "lhs": {
+            "op": "event_field",
+            "field": "margin"
+          },
+          "op": ">=",
+          "rhs": 3
+        },
+        "effect": [
+          {
+            "action": "TransferGig",
+            "to": "controller",
+            "target": {
+              "type": "Gig",
+              "side": "opponent",
+              "chooser": "controller",
+              "prompt": "Steal a gig"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-072",
+    "abilities": [
+      {
+        "kind": "spend_activated",
+        "trigger": {
+          "event": "Anytime"
+        },
+        "prompt": "Hanako: swap a friendly Gig with a rival Gig.",
+        "cost": {
+          "spend": {
+            "from_self": true
+          }
+        },
+        "effect": [
+          {
+            "action": "SelectTarget",
+            "target": {
+              "bind": "mine",
+              "type": "Gig",
+              "side": "friendly",
+              "chooser": "controller",
+              "prompt": "Swap: choose your Gig"
+            }
+          },
+          {
+            "action": "SelectTarget",
+            "target": {
+              "bind": "theirs",
+              "type": "Gig",
+              "side": "opponent",
+              "chooser": "controller",
+              "prompt": "Swap: choose the rival Gig"
+            }
+          },
+          {
+            "action": "SwapGig",
+            "a": {
+              "from_binding": "mine"
+            },
+            "b": {
+              "from_binding": "theirs"
+            }
+          }
+        ]
+      },
+      {
+        "kind": "triggered",
+        "trigger": {
+          "event": "OnPlayPhaseStart",
+          "by": "controller"
+        },
+        "effect": [
+          {
+            "action": "Draw",
+            "n": {
+              "op": "value_pair_count",
+              "side": "self"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-086",
+    "abilities": [
+      {
+        "kind": "triggered",
+        "trigger": {
+          "event": "OnCardAttacks",
+          "by": "self"
+        },
+        "effect": [
+          {
+            "action": "If",
+            "cond": {
+              "cond": "HasValuePair",
+              "side": "friendly"
+            },
+            "then": [
+              {
+                "action": "Ready",
+                "target": {
+                  "type": "Legend",
+                  "side": "friendly",
+                  "filter": {
+                    "subtype_has": "Merc"
+                  },
+                  "quantifier": "upto_n",
+                  "n": 2,
+                  "chooser": "controller",
+                  "prompt": "Pepe Najarro: ready up to 2 friendly Merc Legends"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-125",
+    "statics": [
+      {
+        "kind": "SelfKeyword",
+        "keyword": "BLOCKER"
+      }
+    ],
+    "abilities": [
+      {
+        "kind": "triggered",
+        "trigger": {
+          "event": "OnSpent",
+          "by": "self",
+          "rate_limit": "first_per_turn",
+          "rate_limit_scope": "iid"
+        },
+        "effect": [
+          {
+            "action": "Draw",
+            "n": 1
+          },
+          {
+            "action": "Discard",
+            "n": 1,
+            "target": {
+              "bind": "d",
+              "type": "CardRef",
+              "zone": "hand",
+              "chooser": "controller",
+              "prompt": "Rita Wheeler: discard a card"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-015",
+    "playCostModifier": {
+      "discount": {
+        "op": "count",
+        "side": "self",
+        "zone": "gigs",
+        "filter": {
+          "value_gte": 8
+        }
+      },
+      "min": 1
+    }
+  },
+  {
+    "card_id": "WNTC-068",
+    "onPlay": [
+      {
+        "action": "Defeat",
+        "target": {
+          "type": "Unit",
+          "side": "friendly",
+          "chooser": "controller",
+          "prompt": "Defeat one of your Units"
+        }
+      },
+      {
+        "action": "Defeat",
+        "target": {
+          "type": "Unit",
+          "side": "opponent",
+          "chooser": "opponent",
+          "prompt": "Defeat one of your Units"
+        }
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-010",
+    "onPlay": [
+      {
+        "action": "GrantTempPower",
+        "target": {
+          "bind": "u",
+          "type": "Unit",
+          "side": "friendly",
+          "chooser": "controller",
+          "prompt": "Give a friendly Unit +2 power"
+        },
+        "amount": 2
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-091",
+    "onPlay": [
+      {
+        "action": "GrantTempKeyword",
+        "target": {
+          "bind": "racer_target",
+          "type": "Unit",
+          "side": "friendly",
+          "chooser": "controller",
+          "filter": {
+            "exclude_self": true,
+            "cost_lte": 5
+          },
+          "prompt": "Valentino Street Racer: give another friendly Unit (cost ≤5) Adrenaline this turn"
+        },
+        "keyword": "ADRENALINE"
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-070",
+    "onPlay": [
+      {
+        "action": "Mill",
+        "n": 4,
+        "bind": "trashed"
+      },
+      {
+        "action": "RecoverFromTrash",
+        "target": {
+          "bind": "grabbed",
+          "type": "CardRef",
+          "zone": "trash",
+          "filter": {
+            "type": "Gear",
+            "in_binding": "trashed"
+          },
+          "chooser": "controller",
+          "optional": true,
+          "prompt": "The Heist: add a Gear from among the trashed cards to your hand"
+        }
+      },
+      {
+        "action": "If",
+        "cond": {
+          "cond": "GigValueExists",
+          "side": "friendly",
+          "value": {
+            "op": "card_cost",
+            "ref": "grabbed"
+          }
+        },
+        "then": [
+          {
+            "action": "Optional",
+            "prompt": "The Heist: play the Gear for free instead?",
+            "body": [
+              {
+                "action": "PlayGearFromZone",
+                "target": {
+                  "from_binding": "grabbed"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-118",
+    "onPlay": [
+      {
+        "action": "If",
+        "cond": {
+          "cond": "HasInZoneN",
+          "side": "self",
+          "zone": "hand",
+          "n": 2,
+          "filter": {
+            "type": "Program"
+          }
+        },
+        "then": [
+          {
+            "action": "Optional",
+            "prompt": "Maman Brigitte: discard 2 Programs to bottom-deck an unequipped rival Unit?",
+            "body": [
+              {
+                "action": "Discard",
+                "n": 1,
+                "target": {
+                  "bind": "p1",
+                  "type": "CardRef",
+                  "zone": "hand",
+                  "filter": {
+                    "type": "Program"
+                  },
+                  "chooser": "controller"
+                }
+              },
+              {
+                "action": "Discard",
+                "n": 1,
+                "target": {
+                  "bind": "p2",
+                  "type": "CardRef",
+                  "zone": "hand",
+                  "filter": {
+                    "type": "Program"
+                  },
+                  "chooser": "controller"
+                }
+              },
+              {
+                "action": "BottomDeckFromField",
+                "target": {
+                  "bind": "unit",
+                  "type": "Unit",
+                  "side": "opponent",
+                  "filter": {
+                    "gear_count": 0
+                  },
+                  "chooser": "controller"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-029",
+    "onPlay": [
+      {
+        "action": "Defeat",
+        "target": {
+          "type": "Unit",
+          "side": "opponent",
+          "chooser": "controller",
+          "filter": {
+            "power_lte": 4
+          },
+          "prompt": "Defeat a rival unit (power ≤ 4)"
+        }
+      },
+      {
+        "action": "If",
+        "cond": {
+          "cond": "Compare",
+          "lhs": {
+            "op": "gig_count",
+            "side": "opponent"
+          },
+          "op": ">=",
+          "rhs": {
+            "op": "add",
+            "args": [
+              {
+                "op": "gig_count",
+                "side": "self"
+              },
+              2
+            ]
+          }
+        },
+        "then": [
+          {
+            "action": "Optional",
+            "chooser": "controller",
+            "prompt": "Defeat a second rival unit (power ≤ 4)?",
+            "body": [
+              {
+                "action": "Defeat",
+                "target": {
+                  "type": "Unit",
+                  "side": "opponent",
+                  "chooser": "controller",
+                  "filter": {
+                    "power_lte": 4
+                  },
+                  "prompt": "Defeat a second rival unit (power ≤ 4)"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-108",
+    "abilities": [
+      {
+        "kind": "triggered",
+        "trigger": {
+          "event": "OnCardPlayed",
+          "by": "controller",
+          "card": {
+            "type": "Program",
+            "subtype_has": "Braindance"
+          }
+        },
+        "effect": [
+          {
+            "action": "GrantTempPower",
+            "target": {
+              "type": "Unit",
+              "side": "friendly",
+              "chooser": "controller",
+              "prompt": "Judy: give a friendly Unit +1 power this turn"
+            },
+            "amount": 1
+          }
+        ]
+      },
+      {
+        "kind": "spend_activated",
+        "trigger": {
+          "event": "Anytime"
+        },
+        "prompt": "Judy: trash the top card of your deck (add it to hand if it's a Program)?",
+        "cost": {
+          "spend": {
+            "from_self": true
+          }
+        },
+        "effect": [
+          {
+            "action": "Mill",
+            "n": 1,
+            "bind": "milled"
+          },
+          {
+            "action": "If",
+            "cond": {
+              "cond": "HasInZone",
+              "side": "self",
+              "zone": "trash",
+              "filter": {
+                "in_binding": "milled",
+                "type": "Program"
+              }
+            },
+            "then": [
+              {
+                "action": "Optional",
+                "chooser": "controller",
+                "reveal_from": "milled",
+                "accept_label": "KEEP",
+                "decline_label": "TRASH",
+                "prompt": "Judy: add the trashed Program to your hand?",
+                "body": [
+                  {
+                    "action": "RecoverFromTrash",
+                    "target": {
+                      "bind": "grabbed",
+                      "type": "CardRef",
+                      "zone": "trash",
+                      "filter": {
+                        "type": "Program",
+                        "in_binding": "milled"
+                      },
+                      "chooser": "controller"
+                    }
+                  }
+                ]
+              }
+            ],
+            "else": [
+              {
+                "action": "AckReveal",
+                "from": "milled",
+                "prompt": "Judy: trashed from the top of your deck."
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-139",
+    "onPlay": [
+      {
+        "action": "SelectTarget",
+        "target": {
+          "bind": "g",
+          "type": "Gig",
+          "side": "friendly",
+          "chooser": "controller",
+          "optional": true,
+          "prompt": "Trust No One: choose a Gig to decrease"
+        }
+      },
+      {
+        "action": "ChooseAmount",
+        "bind_to": "d",
+        "min": 0,
+        "max": 3,
+        "prompt": "Trust No One: decrease by up to 3"
+      },
+      {
+        "action": "DecreaseGig",
+        "target": {
+          "bind": "g"
+        },
+        "amount": {
+          "op": "ref",
+          "name": "d"
+        }
+      },
+      {
+        "action": "If",
+        "cond": {
+          "cond": "GigValueExists",
+          "side": "self",
+          "value": 1
+        },
+        "then": [
+          {
+            "action": "Draw",
+            "n": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-003",
+    "abilities": [
+      {
+        "kind": "spend_activated",
+        "trigger": {
+          "event": "Anytime"
+        },
+        "prompt": "Spend Johnny: a friendly Unit can attack spent rival Units this turn.",
+        "cost": {
+          "spend": {
+            "from_self": true
+          },
+          "eddies": {
+            "op": "sub",
+            "args": [
+              2,
+              {
+                "op": "count",
+                "side": "self",
+                "zone": "gigs",
+                "filter": {
+                  "value_gte": 8
+                }
+              }
+            ]
+          }
+        },
+        "effect": [
+          {
+            "action": "GrantTempKeyword",
+            "target": {
+              "bind": "u",
+              "type": "Unit",
+              "side": "friendly",
+              "chooser": "controller",
+              "prompt": "Choose a friendly Unit"
+            },
+            "keyword": "HASTE_VS_SPENT"
+          },
+          {
+            "action": "If",
+            "cond": {
+              "cond": "BoundMatches",
+              "ref": "u",
+              "filter": {
+                "subtype_has": "Rocker"
+              }
+            },
+            "then": [
+              {
+                "action": "GrantTempPower",
+                "target": {
+                  "from_binding": "u"
+                },
+                "amount": 2
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-050",
+    "statics": [
+      {
+        "kind": "AuraKeyword",
+        "affects": {
+          "side": "opponent",
+          "filter": {
+            "type": "Unit"
+          }
+        },
+        "keyword": "NO_HASTE"
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-042",
+    "abilities": [
+      {
+        "kind": "triggered",
+        "trigger": {
+          "event": "OnSpent",
+          "by": "controller"
+        },
+        "condition": {
+          "cond": "Compare",
+          "lhs": {
+            "op": "gear_count",
+            "from_source": true
+          },
+          "op": ">=",
+          "rhs": 1
+        },
+        "effect": [
+          {
+            "action": "Draw",
+            "n": 1
+          }
+        ]
+      },
+      {
+        "kind": "triggered",
+        "trigger": {
+          "event": "OnWouldStealGig",
+          "by": "opponent"
+        },
+        "condition": {
+          "cond": "HasInZone",
+          "side": "self",
+          "zone": "hand",
+          "filter": {
+            "cost_eq": {
+              "op": "event_field",
+              "field": "value"
+            }
+          }
+        },
+        "effect": [
+          {
+            "action": "Optional",
+            "prompt": "Alt Cunningham: discard a card to stop this Gig being stolen?",
+            "body": [
+              {
+                "action": "Discard",
+                "target": {
+                  "bind": "paid",
+                  "type": "CardRef",
+                  "zone": "hand",
+                  "side": "self",
+                  "chooser": "controller",
+                  "filter": {
+                    "cost_eq": {
+                      "op": "event_field",
+                      "field": "value"
+                    }
+                  },
+                  "prompt": "Discard a card with cost equal to the Gig's value"
+                }
+              },
+              {
+                "action": "If",
+                "cond": {
+                  "cond": "BindingSet",
+                  "name": "paid"
+                },
+                "then": [
+                  {
+                    "action": "PreventPendingSteal"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-063",
+    "abilities": [
+      {
+        "kind": "triggered",
+        "trigger": {
+          "event": "OnWouldBeDefeated",
+          "by": "host"
+        },
+        "effect": [
+          {
+            "action": "PlayFromZone",
+            "target": {
+              "bind": "revived",
+              "type": "CardRef",
+              "zone": "trash",
+              "side": "self",
+              "chooser": "controller",
+              "filter": {
+                "type": "Unit",
+                "cost_lte": 9
+              },
+              "optional": true,
+              "prompt": "Play a Unit with cost 9 or less from your trash for free"
+            },
+            "to": "field"
+          },
+          {
+            "action": "PreventPendingDefeat"
+          },
+          {
+            "action": "BottomDeckFromField",
+            "target": {
+              "from_host": true
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-073",
+    "statics": [
+      {
+        "kind": "SelfKeyword",
+        "keyword": "GO_SOLO"
+      }
+    ],
+    "abilities": [
+      {
+        "kind": "triggered",
+        "trigger": {
+          "event": "OnWouldBeDefeated",
+          "by": "controller"
+        },
+        "condition": {
+          "cond": "Compare",
+          "lhs": {
+            "op": "eddie_pool"
+          },
+          "op": ">=",
+          "rhs": 1
+        },
+        "effect": [
+          {
+            "action": "Optional",
+            "prompt": "Jackie Welles: spend 1 €$ to be defeated instead?",
+            "body": [
+              {
+                "action": "PayEddies",
+                "n": 1,
+                "bind": "paid"
+              },
+              {
+                "action": "If",
+                "cond": {
+                  "cond": "BindingSet",
+                  "name": "paid"
+                },
+                "then": [
+                  {
+                    "action": "PreventPendingDefeat"
+                  },
+                  {
+                    "action": "RemoveFromGame",
+                    "target": {
+                      "from_self": true
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-079",
+    "abilities": [
+      {
+        "kind": "triggered",
+        "trigger": {
+          "event": "OnLoseFight",
+          "by": "self"
+        },
+        "effect": [
+          {
+            "action": "Defeat",
+            "target": {
+              "from_event": "opposing"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-084",
+    "onPlay": [
+      {
+        "action": "If",
+        "cond": {
+          "cond": "Compare",
+          "lhs": {
+            "op": "mod",
+            "args": [
+              {
+                "op": "street_cred",
+                "side": "self"
+              },
+              2
+            ]
+          },
+          "op": "==",
+          "rhs": 0
+        },
+        "then": [
+          {
+            "action": "GrantTempKeyword",
+            "target": {
+              "type": "Unit",
+              "side": "opponent",
+              "chooser": "controller",
+              "optional": true,
+              "prompt": "Choose a rival Unit that can't ready until your next turn"
+            },
+            "keyword": "CANNOT_READY",
+            "until": "controller_next_turn"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-116",
+    "abilities": [
+      {
+        "kind": "spend_activated",
+        "trigger": {
+          "event": "Anytime"
+        },
+        "prompt": "1 €$, Spend: reveal the top card of your deck.",
+        "cost": {
+          "spend": {
+            "from_self": true
+          },
+          "eddies": 1
+        },
+        "effect": [
+          {
+            "action": "SelectTarget",
+            "target": {
+              "bind": "top",
+              "type": "CardRef",
+              "zone": "deck",
+              "side": "self",
+              "chooser": "auto",
+              "auto": "first",
+              "optional": true
+            }
+          },
+          {
+            "action": "AckReveal",
+            "from": "top"
+          },
+          {
+            "action": "Optional",
+            "prompt": "Judy Álvarez: play the revealed card for free?",
+            "reveal_from": "top",
+            "body": [
+              {
+                "action": "If",
+                "cond": {
+                  "cond": "BoundMatches",
+                  "ref": "top",
+                  "filter": {
+                    "type": "Unit"
+                  }
+                },
+                "then": [
+                  {
+                    "action": "PlayFromZone",
+                    "target": {
+                      "from_binding": "top",
+                      "zone": "deck"
+                    },
+                    "to": "field"
+                  }
+                ],
+                "else": [
+                  {
+                    "action": "If",
+                    "cond": {
+                      "cond": "BoundMatches",
+                      "ref": "top",
+                      "filter": {
+                        "type": "Program"
+                      }
+                    },
+                    "then": [
+                      {
+                        "action": "PlayFromZone",
+                        "target": {
+                          "from_binding": "top",
+                          "zone": "deck"
+                        },
+                        "to": "trash"
+                      }
+                    ],
+                    "else": [
+                      {
+                        "action": "PlayGearFromZone",
+                        "target": {
+                          "from_binding": "top",
+                          "zone": "deck"
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "otherwise": [
+              {
+                "action": "Draw",
+                "n": 1
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-135",
+    "onPlay": [
+      {
+        "action": "If",
+        "cond": {
+          "cond": "HasInZone",
+          "side": "self",
+          "zone": "gigs",
+          "filter": {
+            "sides": 4,
+            "value": 1
+          }
+        },
+        "then": [
+          {
+            "action": "GrantTempPower",
+            "target": {
+              "type": "Unit",
+              "side": "opponent",
+              "chooser": "controller",
+              "optional": true,
+              "prompt": "Give a rival Unit -5 power this turn"
+            },
+            "amount": -5
+          },
+          {
+            "action": "BottomDeckFromField",
+            "target": {
+              "type": "Unit",
+              "side": "opponent",
+              "chooser": "controller",
+              "optional": true,
+              "filter": {
+                "power_eq": 0
+              },
+              "prompt": "Bottom-deck a rival Unit with power 0"
+            }
+          }
+        ],
+        "else": [
+          {
+            "action": "Optional",
+            "prompt": "Pyramid Song: give a rival Unit -5 power? (No = bottom-deck a rival Unit with power 0)",
+            "body": [
+              {
+                "action": "GrantTempPower",
+                "target": {
+                  "type": "Unit",
+                  "side": "opponent",
+                  "chooser": "controller",
+                  "optional": true,
+                  "prompt": "Give a rival Unit -5 power this turn"
+                },
+                "amount": -5
+              }
+            ],
+            "otherwise": [
+              {
+                "action": "BottomDeckFromField",
+                "target": {
+                  "type": "Unit",
+                  "side": "opponent",
+                  "chooser": "controller",
+                  "optional": true,
+                  "filter": {
+                    "power_eq": 0
+                  },
+                  "prompt": "Bottom-deck a rival Unit with power 0"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-011",
+    "statics": [
+      {
+        "kind": "AlwaysWinsFight",
+        "vs": {
+          "faction": "Corpo"
+        }
+      }
+    ],
+    "abilities": [
+      {
+        "kind": "triggered",
+        "trigger": {
+          "event": "OnWinFight",
+          "by": "self",
+          "rate_limit": "first_per_turn",
+          "rate_limit_scope": "iid"
+        },
+        "effect": [
+          {
+            "action": "Ready",
+            "target": {
+              "from_self": true
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-021",
+    "statics": [
+      {
+        "kind": "SelfKeyword",
+        "keyword": "ATTACK_READY_BLOCKERS",
+        "condition": {
+          "cond": "Compare",
+          "lhs": {
+            "op": "street_cred",
+            "side": "self"
+          },
+          "op": ">",
+          "rhs": {
+            "op": "street_cred",
+            "side": "opponent"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-069",
+    "quick": true,
+    "onPlay": [
+      {
+        "action": "AddBadge",
+        "trigger": {
+          "event": "OnLoseFight",
+          "by": "controller"
+        },
+        "effect": [
+          {
+            "action": "Defeat",
+            "target": {
+              "from_event": "opposing"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-082",
+    "abilities": [
+      {
+        "kind": "triggered",
+        "trigger": {
+          "event": "OnEndTurn",
+          "by": "controller"
+        },
+        "condition": {
+          "cond": "SelfIsSpent"
+        },
+        "effect": [
+          {
+            "action": "Ready",
+            "target": {
+              "bind": "legend",
+              "type": "Legend",
+              "side": "friendly",
+              "face": "face_up",
+              "filter": {
+                "state": "spent"
+              },
+              "chooser": "controller",
+              "prompt": "MaxTac Squadron: ready a friendly face-up Legend"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-094",
+    "statics": [
+      {
+        "kind": "AuraKeyword",
+        "affects": {
+          "is": "equipped_host"
+        },
+        "keyword": "BLOCKER"
+      },
+      {
+        "kind": "SoloCostTax",
+        "amount": 2,
+        "side": "opponent"
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-102",
+    "quick": true,
+    "onPlay": [
+      {
+        "action": "GrantTempPower",
+        "target": {
+          "bind": "unit",
+          "type": "Unit",
+          "side": "friendly",
+          "chooser": "controller",
+          "prompt": "Synapse Burnout: choose a friendly Unit"
+        },
+        "amount": {
+          "op": "legend_face_count",
+          "side": "self",
+          "face": "face_up"
+        },
+        "when": {
+          "during_fight": true,
+          "vs_type": "Unit"
+        }
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-114",
+    "onPlay": [
+      {
+        "action": "Mill",
+        "n": 3,
+        "bind": "milled"
+      },
+      {
+        "action": "RecoverFromTrash",
+        "target": {
+          "bind": "program",
+          "type": "CardRef",
+          "zone": "trash",
+          "filter": {
+            "type": "Program",
+            "in_binding": "milled"
+          },
+          "chooser": "controller",
+          "prompt": "Add a Program from among the trashed cards to your hand"
+        }
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-129",
+    "abilities": [
+      {
+        "kind": "triggered",
+        "trigger": {
+          "event": "OnSpent",
+          "by": "host"
+        },
+        "effect": [
+          {
+            "action": "Draw",
+            "n": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-020",
+    "abilities": [
+      {
+        "kind": "triggered",
+        "trigger": {
+          "event": "OnStealGigs",
+          "by": "self"
+        },
+        "effect": [
+          {
+            "action": "ChooseAmount",
+            "bind_to": "amt",
+            "min": 0,
+            "max": 5,
+            "prompt": "V — Roamer of the Badlands: increase the stolen Gig by how much?"
+          },
+          {
+            "action": "IncreaseGig",
+            "target": {
+              "from_event": "stolen_gigs"
+            },
+            "amount": {
+              "op": "ref",
+              "name": "amt"
+            }
+          }
+        ]
+      },
+      {
+        "kind": "triggered",
+        "trigger": {
+          "event": "OnEndTurn",
+          "by": "controller"
+        },
+        "condition": {
+          "cond": "HasInZoneN",
+          "side": "self",
+          "zone": "gigs",
+          "filter": {
+            "value_gte": 8
+          },
+          "n": 2
+        },
+        "effect": [
+          {
+            "action": "Draw",
+            "n": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-040",
+    "statics": [
+      {
+        "kind": "SelfKeyword",
+        "keyword": "GO_SOLO"
+      }
+    ],
+    "abilities": [
+      {
+        "kind": "triggered",
+        "trigger": {
+          "event": "OnStealGigs",
+          "by": "controller",
+          "card": {
+            "type": "Legend"
+          }
+        },
+        "effect": [
+          {
+            "action": "If",
+            "cond": {
+              "cond": "Compare",
+              "lhs": {
+                "op": "mod",
+                "args": [
+                  {
+                    "op": "event_field",
+                    "field": "stolen_gigs[0].value"
+                  },
+                  2
+                ]
+              },
+              "op": "==",
+              "rhs": 0
+            },
+            "then": [
+              {
+                "action": "Draw",
+                "n": 1
+              }
+            ],
+            "else": [
+              {
+                "action": "RivalDiscards",
+                "n": 1
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-105",
+    "onPlay": [
+      {
+        "action": "Defeat",
+        "target": {
+          "type": "Unit",
+          "side": "both",
+          "filter": {
+            "state": "spent"
+          },
+          "chooser": "controller",
+          "optional": true,
+          "prompt": "Wild in the Streets: defeat a spent Unit"
+        }
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-140",
+    "onPlay": [
+      {
+        "action": "BottomDeckFromField",
+        "target": {
+          "bind": "own",
+          "type": "Unit",
+          "side": "friendly",
+          "filter": {
+            "state": "ready"
+          },
+          "chooser": "controller",
+          "optional": true,
+          "prompt": "Unlikely Bond: bottom-deck a ready friendly Unit"
+        }
+      },
+      {
+        "action": "If",
+        "cond": {
+          "cond": "BindingSet",
+          "name": "own"
+        },
+        "then": [
+          {
+            "action": "BottomDeckFromField",
+            "target": {
+              "type": "Unit",
+              "side": "opponent",
+              "filter": {
+                "state": "spent"
+              },
+              "chooser": "controller",
+              "optional": true,
+              "prompt": "Unlikely Bond: bottom-deck a spent rival Unit"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-133",
+    "onPlay": [
+      {
+        "action": "BottomDeckFromField",
+        "target": {
+          "type": "Unit",
+          "side": "opponent",
+          "filter": {
+            "power_is_lowest": true
+          },
+          "chooser": "controller",
+          "optional": true,
+          "prompt": "Les Élémens: bottom-deck the rival Unit with the lowest power"
+        }
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-121",
+    "abilities": [
+      {
+        "kind": "triggered",
+        "trigger": {
+          "event": "OnEndTurn",
+          "by": "controller"
+        },
+        "condition": {
+          "cond": "Compare",
+          "lhs": {
+            "op": "street_cred",
+            "side": "self"
+          },
+          "op": "<",
+          "rhs": {
+            "op": "street_cred",
+            "side": "opponent"
+          }
+        },
+        "effect": [
+          {
+            "action": "Ready",
+            "target": {
+              "from_self": true
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-049",
+    "abilities": [
+      {
+        "kind": "triggered",
+        "trigger": {
+          "event": "OnStealGigs",
+          "by": "self"
+        },
+        "condition": {
+          "cond": "HostEquipsSelf"
+        },
+        "effect": [
+          {
+            "action": "RivalDiscards",
+            "n": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-056",
+    "playCostModifier": {
+      "discount": {
+        "op": "count",
+        "side": "self",
+        "zone": "trash",
+        "filter": {
+          "type": "Unit"
+        }
+      },
+      "min": 1
+    }
+  },
+  {
+    "card_id": "WNTC-032",
+    "onPlay": [
+      {
+        "action": "SelectTarget",
+        "target": {
+          "bind": "u",
+          "type": "Unit",
+          "side": "friendly",
+          "chooser": "controller",
+          "prompt": "Gunpoint Diplomacy: choose a friendly Unit"
+        }
+      },
+      {
+        "action": "If",
+        "cond": {
+          "cond": "Compare",
+          "lhs": {
+            "op": "street_cred",
+            "side": "self"
+          },
+          "op": "<",
+          "rhs": {
+            "op": "street_cred",
+            "side": "opponent"
+          }
+        },
+        "then": [
+          {
+            "action": "Optional",
+            "chooser": "opponent",
+            "prompt": "Gunpoint Diplomacy: let it attack ready Units? (No = give it +3 power instead)",
+            "body": [
+              {
+                "action": "GrantTempKeyword",
+                "target": {
+                  "from_binding": "u"
+                },
+                "keyword": "ATTACK_READY_UNITS"
+              }
+            ],
+            "otherwise": [
+              {
+                "action": "GrantTempPower",
+                "target": {
+                  "from_binding": "u"
+                },
+                "amount": 3
+              }
+            ]
+          }
+        ],
+        "else": [
+          {
+            "action": "GrantTempKeyword",
+            "target": {
+              "from_binding": "u"
+            },
+            "keyword": "ATTACK_READY_UNITS"
+          },
+          {
+            "action": "GrantTempPower",
+            "target": {
+              "from_binding": "u"
+            },
+            "amount": 3
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-024",
+    "abilities": [
+      {
+        "kind": "triggered",
+        "trigger": {
+          "event": "OnWouldBeDefeated",
+          "by": "host"
+        },
+        "effect": [
+          {
+            "action": "PreventPendingDefeat"
+          },
+          {
+            "action": "DefeatGear",
+            "target": {
+              "from_self": true
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-085",
+    "statics": [
+      {
+        "kind": "LegendCallDiscount",
+        "amount": 1
+      }
+    ],
+    "abilities": [
+      {
+        "kind": "triggered",
+        "trigger": {
+          "event": "OnCardAttacks",
+          "by": "self"
+        },
+        "effect": [
+          {
+            "action": "Discard",
+            "n": 1,
+            "target": {
+              "bind": "dc",
+              "type": "CardRef",
+              "zone": "hand",
+              "side": "self",
+              "chooser": "controller",
+              "optional": true,
+              "prompt": "Panam Palmer: discard a card"
+            }
+          },
+          {
+            "action": "If",
+            "cond": {
+              "cond": "BindingSet",
+              "name": "dc"
+            },
+            "then": [
+              {
+                "action": "Draw",
+                "n": {
+                  "op": "legend_face_count",
+                  "side": "self",
+                  "face": "face_up"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-110",
+    "onCall": [
+      {
+        "action": "Optional",
+        "prompt": "Wakako Okada: give a rival Unit -2 power? (No = draw 1)",
+        "body": [
+          {
+            "action": "GrantTempPower",
+            "target": {
+              "type": "Unit",
+              "side": "opponent",
+              "chooser": "controller",
+              "optional": true,
+              "prompt": "Give a rival Unit -2 power this turn"
+            },
+            "amount": -2
+          }
+        ],
+        "otherwise": [
+          {
+            "action": "Draw",
+            "n": 1
+          }
+        ]
+      }
+    ],
+    "abilities": [
+      {
+        "kind": "spend_activated",
+        "trigger": {
+          "event": "Anytime"
+        },
+        "prompt": "Wakako Okada: spend to decrease a Gig by up to 2.",
+        "cost": {
+          "spend": {
+            "from_self": true
+          }
+        },
+        "effect": [
+          {
+            "action": "SelectTarget",
+            "target": {
+              "bind": "g",
+              "type": "Gig",
+              "side": "both",
+              "chooser": "controller",
+              "prompt": "Wakako Okada: choose a Gig to decrease"
+            }
+          },
+          {
+            "action": "ChooseAmount",
+            "bind_to": "amt",
+            "min": 0,
+            "max": 2,
+            "prompt": "Decrease by how much?"
+          },
+          {
+            "action": "DecreaseGig",
+            "target": {
+              "from_binding": "g"
+            },
+            "amount": {
+              "op": "ref",
+              "name": "amt"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-059",
+    "statics": [
+      {
+        "kind": "AuraKeyword",
+        "affects": {
+          "is": "equipped_host"
+        },
+        "keyword": "ADRENALINE",
+        "condition": {
+          "cond": "Compare",
+          "lhs": {
+            "op": "gig_count",
+            "side": "opponent"
+          },
+          "op": ">=",
+          "rhs": {
+            "op": "add",
+            "args": [
+              {
+                "op": "gig_count",
+                "side": "self"
+              },
+              2
+            ]
+          }
+        }
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-111",
+    "onPlay": [
+      {
+        "action": "Draw",
+        "n": 2
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-038",
+    "onCall": [
+      {
+        "action": "Optional",
+        "prompt": "Muamar Reyes: make a friendly Unit safe from fight defeats this turn? (No = draw 1)",
+        "body": [
+          {
+            "action": "GrantTempKeyword",
+            "target": {
+              "type": "Unit",
+              "side": "friendly",
+              "chooser": "controller",
+              "optional": true,
+              "prompt": "Choose a friendly Unit that can't be defeated in a fight this turn"
+            },
+            "keyword": "FIGHT_IMMUNE"
+          }
+        ],
+        "otherwise": [
+          {
+            "action": "Draw",
+            "n": 1
+          }
+        ]
+      }
+    ],
+    "abilities": [
+      {
+        "kind": "spend_activated",
+        "trigger": {
+          "event": "Anytime"
+        },
+        "prompt": "Muamar Reyes: spend to adjust a Gig by 1.",
+        "cost": {
+          "spend": {
+            "from_self": true
+          }
+        },
+        "effect": [
+          {
+            "action": "SelectTarget",
+            "target": {
+              "bind": "g",
+              "type": "Gig",
+              "side": "both",
+              "chooser": "controller",
+              "prompt": "Muamar Reyes: choose a Gig to adjust"
+            }
+          },
+          {
+            "action": "AdjustGig",
+            "target": {
+              "from_binding": "g"
+            },
+            "amount": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-057",
+    "onPlay": [
+      {
+        "action": "DiscountNextPlay",
+        "amount": 3,
+        "filter": {
+          "type": "Gear",
+          "subtype_has": "Cyberware"
+        },
+        "min": 1
+      }
+    ],
+    "abilities": [
+      {
+        "kind": "triggered",
+        "trigger": {
+          "event": "OnPlayPhaseStart",
+          "by": "controller",
+          "rate_limit": "first_per_turn",
+          "rate_limit_scope": "controller"
+        },
+        "effect": [
+          {
+            "action": "DiscountNextPlay",
+            "amount": 3,
+            "filter": {
+              "type": "Gear",
+              "subtype_has": "Cyberware"
+            },
+            "min": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-074",
+    "onCall": [
+      {
+        "action": "Optional",
+        "prompt": "Padre: spend a rival Unit? (No = draw 1)",
+        "body": [
+          {
+            "action": "Spend",
+            "target": {
+              "type": "Unit",
+              "side": "opponent",
+              "filter": {
+                "state": "ready"
+              },
+              "chooser": "controller",
+              "optional": true,
+              "prompt": "Padre: spend a rival Unit"
+            }
+          }
+        ],
+        "otherwise": [
+          {
+            "action": "Draw",
+            "n": 1
+          }
+        ]
+      }
+    ],
+    "abilities": [
+      {
+        "kind": "spend_activated",
+        "trigger": {
+          "event": "Anytime"
+        },
+        "prompt": "Padre: spend to set a Gig to another player's Gig value.",
+        "cost": {
+          "spend": {
+            "from_self": true
+          }
+        },
+        "effect": [
+          {
+            "action": "SelectTarget",
+            "target": {
+              "bind": "src",
+              "type": "Gig",
+              "side": "both",
+              "chooser": "controller",
+              "prompt": "Padre: choose the Gig to copy the value FROM"
+            }
+          },
+          {
+            "action": "SelectTarget",
+            "target": {
+              "bind": "dst",
+              "type": "Gig",
+              "side": "both",
+              "chooser": "controller",
+              "filter": {
+                "opposite_side_of": "src"
+              },
+              "prompt": "Padre: choose the Gig to set (other player's)"
+            }
+          },
+          {
+            "action": "SetGigValue",
+            "target": {
+              "from_binding": "dst"
+            },
+            "amount": {
+              "op": "gig_value",
+              "ref": "src"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-096",
+    "playCostModifier": {
+      "discount": {
+        "op": "legend_face_count",
+        "side": "self",
+        "face": "face_up"
+      },
+      "min": 1
+    }
+  },
+  {
+    "card_id": "WNTC-098",
+    "onPlay": [
+      {
+        "action": "Spend",
+        "target": {
+          "type": "Unit",
+          "side": "opponent",
+          "quantifier": "all"
+        }
+      },
+      {
+        "action": "Defeat",
+        "target": {
+          "type": "Unit",
+          "side": "both",
+          "filter": {
+            "state": "spent"
+          },
+          "chooser": "controller",
+          "optional": true,
+          "prompt": "(Don't Fear) The Reaper: defeat a spent Unit"
+        }
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-106",
+    "abilities": [
+      {
+        "kind": "spend_activated",
+        "trigger": {
+          "event": "Anytime"
+        },
+        "prompt": "Alt: play a Program from your trash (pay its cost), then bottom-deck it.",
+        "cost": {
+          "eddies": 1,
+          "spend": {
+            "from_self": true
+          }
+        },
+        "effect": [
+          {
+            "action": "PlayFromZone",
+            "target": {
+              "type": "Program",
+              "side": "self",
+              "zone": "trash",
+              "chooser": "controller"
+            },
+            "pay_cost": true,
+            "to": "deck"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-002",
+    "onCall": [
+      {
+        "action": "Optional",
+        "prompt": "Dexter DeShawn: give a friendly Unit +2 power? (No = draw 1)",
+        "body": [
+          {
+            "action": "GrantTempPower",
+            "target": {
+              "type": "Unit",
+              "side": "friendly",
+              "chooser": "controller",
+              "optional": true,
+              "prompt": "Give a friendly Unit +2 power this turn"
+            },
+            "amount": 2
+          }
+        ],
+        "otherwise": [
+          {
+            "action": "Draw",
+            "n": 1
+          }
+        ]
+      }
+    ],
+    "abilities": [
+      {
+        "kind": "spend_activated",
+        "trigger": {
+          "event": "Anytime"
+        },
+        "prompt": "Dexter DeShawn: spend to increase a Gig by up to 2.",
+        "cost": {
+          "spend": {
+            "from_self": true
+          }
+        },
+        "effect": [
+          {
+            "action": "SelectTarget",
+            "target": {
+              "bind": "g",
+              "type": "Gig",
+              "side": "both",
+              "chooser": "controller",
+              "prompt": "Dexter DeShawn: choose a Gig to increase"
+            }
+          },
+          {
+            "action": "ChooseAmount",
+            "bind_to": "d",
+            "min": 0,
+            "max": 2,
+            "prompt": "Increase by how much?"
+          },
+          {
+            "action": "IncreaseGig",
+            "target": {
+              "from_binding": "g"
+            },
+            "amount": {
+              "op": "ref",
+              "name": "d"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-017",
+    "statics": [
+      {
+        "kind": "SelfKeyword",
+        "keyword": "CANNOT_ATTACK_GIGS"
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-023",
+    "abilities": [
+      {
+        "kind": "triggered",
+        "trigger": {
+          "event": "OnSpent",
+          "by": "host"
+        },
+        "effect": [
+          {
+            "action": "Optional",
+            "prompt": "Arasaka Emergency Radioport: look at a friendly face-down Legend?",
+            "body": [
+              {
+                "action": "SelectTarget",
+                "target": {
+                  "bind": "leg",
+                  "type": "Legend",
+                  "side": "friendly",
+                  "face": "face_down",
+                  "chooser": "controller",
+                  "optional": true,
+                  "prompt": "Radioport: look at a face-down Legend"
+                }
+              },
+              {
+                "action": "MarkPeeked",
+                "target": {
+                  "from_binding": "leg"
+                }
+              },
+              {
+                "action": "If",
+                "cond": {
+                  "cond": "And",
+                  "args": [
+                    {
+                      "cond": "BindingSet",
+                      "name": "leg"
+                    },
+                    {
+                      "cond": "BoundMatches",
+                      "ref": "leg",
+                      "filter": {
+                        "any_of": [
+                          {
+                            "faction": "Arasaka"
+                          },
+                          {
+                            "has_keyword": "GO_SOLO"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "cond": "CanCallLegend"
+                    }
+                  ]
+                },
+                "then": [
+                  {
+                    "action": "Optional",
+                    "prompt": "Radioport: Call that Legend for free?",
+                    "body": [
+                      {
+                        "action": "CallLegend",
+                        "target": {
+                          "from_binding": "leg"
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-035",
+    "onPlay": [
+      {
+        "action": "BindValue",
+        "bind_to": "total",
+        "value": {
+          "op": "add",
+          "args": [
+            {
+              "op": "count",
+              "side": "self",
+              "zone": "hand"
+            },
+            {
+              "op": "count",
+              "side": "opponent",
+              "zone": "hand"
+            }
+          ]
+        }
+      },
+      {
+        "action": "Discard",
+        "target": {
+          "type": "CardRef",
+          "zone": "hand",
+          "side": "self",
+          "quantifier": "all"
+        }
+      },
+      {
+        "action": "Discard",
+        "target": {
+          "type": "CardRef",
+          "zone": "hand",
+          "side": "opponent",
+          "quantifier": "all"
+        }
+      },
+      {
+        "action": "Optional",
+        "prompt": "Shattered Memories: draw 5?",
+        "body": [
+          {
+            "action": "Draw",
+            "n": 5
+          }
+        ]
+      },
+      {
+        "action": "Optional",
+        "chooser": "opponent",
+        "prompt": "Shattered Memories: draw 5?",
+        "body": [
+          {
+            "action": "Draw",
+            "n": 5,
+            "side": "opponent"
+          }
+        ]
+      },
+      {
+        "action": "If",
+        "cond": {
+          "cond": "GigValueExists",
+          "side": "self",
+          "value": {
+            "op": "ref",
+            "name": "total"
+          }
+        },
+        "then": [
+          {
+            "action": "Draw",
+            "n": 2
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-047",
+    "onPlay": [
+      {
+        "action": "Optional",
+        "prompt": "Heywood Ripperdoc: defeat a Gear?",
+        "body": [
+          {
+            "action": "SelectTarget",
+            "target": {
+              "bind": "gr",
+              "type": "Gear",
+              "side": "both",
+              "chooser": "controller",
+              "optional": true,
+              "prompt": "Heywood Ripperdoc: defeat a Gear"
+            }
+          },
+          {
+            "action": "DefeatGear",
+            "target": {
+              "from_binding": "gr"
+            }
+          },
+          {
+            "action": "If",
+            "cond": {
+              "cond": "And",
+              "args": [
+                {
+                  "cond": "BindingSet",
+                  "name": "gr"
+                },
+                {
+                  "cond": "GigValueExists",
+                  "side": "self",
+                  "value": {
+                    "op": "card_cost",
+                    "ref": "gr"
+                  }
+                }
+              ]
+            },
+            "then": [
+              {
+                "action": "Draw",
+                "n": 1
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-080",
+    "onPlay": [
+      {
+        "action": "Optional",
+        "prompt": "MaxTac AV: swap a friendly Gig with a rival Gig?",
+        "body": [
+          {
+            "action": "SelectTarget",
+            "target": {
+              "bind": "mine",
+              "type": "Gig",
+              "side": "self",
+              "chooser": "controller",
+              "optional": true,
+              "prompt": "MaxTac AV: choose your Gig"
+            }
+          },
+          {
+            "action": "SwapGig",
+            "a": {
+              "from_binding": "mine"
+            },
+            "b": {
+              "type": "Gig",
+              "side": "opponent",
+              "chooser": "controller",
+              "optional": true,
+              "prompt": "MaxTac AV: choose the rival Gig"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-126",
+    "abilities": [
+      {
+        "kind": "triggered",
+        "trigger": {
+          "event": "OnStealGigs",
+          "by": "controller",
+          "card": {
+            "type": "Unit"
+          },
+          "rate_limit": "first_per_turn",
+          "rate_limit_scope": "iid"
+        },
+        "condition": {
+          "cond": "And",
+          "args": [
+            {
+              "cond": "Not",
+              "arg": {
+                "cond": "SourceIsSelf"
+              }
+            },
+            {
+              "cond": "Compare",
+              "lhs": {
+                "op": "event_field",
+                "field": "stolen_gigs[0].value"
+              },
+              "op": "<",
+              "rhs": {
+                "op": "source_power"
+              }
+            }
+          ]
+        },
+        "effect": [
+          {
+            "action": "ReadyEddie",
+            "n": 2
+          }
+        ]
+      },
+      {
+        "kind": "spend_activated",
+        "quick": true,
+        "trigger": {
+          "event": "Anytime"
+        },
+        "prompt": "Rogue: pay 2 €$ and spend — a rival Unit loses power equal to this Unit's power.",
+        "cost": {
+          "eddies": 2,
+          "spend": {
+            "from_self": true
+          }
+        },
+        "effect": [
+          {
+            "action": "GrantTempPower",
+            "target": {
+              "type": "Unit",
+              "side": "opponent",
+              "chooser": "controller",
+              "prompt": "Rogue: choose a rival Unit"
+            },
+            "amount": {
+              "op": "mul",
+              "args": [
+                {
+                  "op": "self_power"
+                },
+                -1
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-130",
+    "abilities": [
+      {
+        "kind": "triggered",
+        "trigger": {
+          "event": "OnSpent",
+          "by": "host"
+        },
+        "effect": [
+          {
+            "action": "If",
+            "cond": {
+              "cond": "Compare",
+              "lhs": {
+                "op": "count",
+                "side": "self",
+                "zone": "deck"
+              },
+              "op": ">=",
+              "rhs": 1
+            },
+            "then": [
+              {
+                "action": "RevealTop",
+                "n": 1,
+                "bind": "top"
+              },
+              {
+                "action": "Optional",
+                "reveal_from": "top",
+                "accept_label": "TRASH",
+                "decline_label": "KEEP",
+                "prompt": "Tetratronic Rippler: trash the top card of your deck?",
+                "body": [
+                  {
+                    "action": "TakeFromBound",
+                    "from": "top",
+                    "take_none": true,
+                    "trash_remainder": true
+                  }
+                ],
+                "otherwise": [
+                  {
+                    "action": "TakeFromBound",
+                    "from": "top",
+                    "take_none": true,
+                    "to_top": true
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-127",
+    "onPlay": [
+      {
+        "action": "RestrictGigSteals",
+        "forbid": "below_power",
+        "attacker": {
+          "type": "Legend"
+        },
+        "until": "controller_next_turn"
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-008",
+    "onPlay": [
+      {
+        "action": "RestrictGigSteals",
+        "forbid": "above_power",
+        "attacker": {
+          "type": "Unit"
+        },
+        "until": "controller_next_turn"
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-137",
+    "onPlay": [
+      {
+        "action": "SearchTopN",
+        "n": 3,
+        "take_up_to": {
+          "op": "add",
+          "args": [
+            1,
+            {
+              "op": "count",
+              "side": "self",
+              "zone": "gigs",
+              "filter": {
+                "value": 1
+              }
+            }
+          ]
+        },
+        "prompt": "Three Mouths, One Desire: add 1 card (+1 per friendly min Gig)"
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-134",
+    "playCostModifier": {
+      "condition": {
+        "cond": "Compare",
+        "lhs": {
+          "op": "count",
+          "side": "self",
+          "zone": "fixer"
+        },
+        "op": "==",
+        "rhs": 0
+      },
+      "discount": 2,
+      "min": 1
+    },
+    "onPlay": [
+      {
+        "action": "Optional",
+        "prompt": "Nocturne: draw 2? (No = choose another effect)",
+        "body": [
+          {
+            "action": "Draw",
+            "n": 2
+          }
+        ],
+        "otherwise": [
+          {
+            "action": "Optional",
+            "prompt": "Nocturne: a Unit can't attack until your next turn? (No = a friendly Legend solos for -2 €$ this turn)",
+            "body": [
+              {
+                "action": "GrantTempKeyword",
+                "target": {
+                  "type": "Unit",
+                  "side": "both",
+                  "chooser": "controller",
+                  "optional": true,
+                  "prompt": "Nocturne: choose a Unit that can't attack until your next turn"
+                },
+                "keyword": "CANNOT_ATTACK",
+                "until": "controller_next_turn"
+              }
+            ],
+            "otherwise": [
+              {
+                "action": "DiscountGoSolo",
+                "target": {
+                  "type": "Legend",
+                  "side": "friendly",
+                  "face": "face_up",
+                  "filter": {
+                    "has_keyword": "GO_SOLO"
+                  },
+                  "chooser": "controller",
+                  "optional": true,
+                  "prompt": "Nocturne: choose a Legend to solo for -2 €$ this turn"
+                },
+                "amount": 2,
+                "min": 1
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-031",
+    "quick": true,
+    "onPlay": [
+      {
+        "action": "DefeatGear",
+        "target": {
+          "type": "Gear",
+          "side": "opponent",
+          "filter": {
+            "power_lte": 2
+          },
+          "chooser": "controller",
+          "optional": true,
+          "prompt": "Detonate: defeat a rival Gear with power 2 or less"
+        }
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-081",
+    "playCostModifier": {
+      "discount": {
+        "op": "count",
+        "side": "opponent",
+        "zone": "field"
+      },
+      "min": 1
+    }
+  },
+  {
+    "card_id": "WNTC-100",
+    "onPlay": [
+      {
+        "action": "SelectTarget",
+        "target": {
+          "bind": "u",
+          "type": "Unit",
+          "side": "opponent",
+          "chooser": "controller",
+          "optional": true,
+          "prompt": "Memory Relapse: spend a rival Unit"
+        }
+      },
+      {
+        "action": "Spend",
+        "target": {
+          "from_binding": "u"
+        }
+      },
+      {
+        "action": "GrantTempKeyword",
+        "target": {
+          "from_binding": "u"
+        },
+        "keyword": "CANNOT_READY",
+        "until": "controller_next_turn"
+      },
+      {
+        "action": "If",
+        "cond": {
+          "cond": "Compare",
+          "lhs": {
+            "op": "mod",
+            "args": [
+              {
+                "op": "street_cred",
+                "side": "self"
+              },
+              2
+            ]
+          },
+          "op": "==",
+          "rhs": 0
+        },
+        "then": [
+          {
+            "action": "Draw",
+            "n": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-090",
+    "onPlay": [
+      {
+        "action": "If",
+        "cond": {
+          "cond": "CanCallLegend"
+        },
+        "then": [
+          {
+            "action": "Optional",
+            "prompt": "Tyger's Whisper: Call a Legend for free?",
+            "body": [
+              {
+                "action": "CallLegend"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-104",
+    "playCostModifier": {
+      "condition": {
+        "cond": "Compare",
+        "lhs": {
+          "op": "gig_count",
+          "side": "opponent"
+        },
+        "op": ">=",
+        "rhs": {
+          "op": "add",
+          "args": [
+            {
+              "op": "gig_count",
+              "side": "self"
+            },
+            2
+          ]
+        }
+      },
+      "discount": 2,
+      "min": 3
+    },
+    "onPlay": [
+      {
+        "action": "PlayFromZone",
+        "target": {
+          "type": "Unit",
+          "side": "self",
+          "zone": "trash",
+          "filter": {
+            "cost_lte": 3
+          },
+          "chooser": "controller",
+          "optional": true,
+          "prompt": "We Gotta Live Together: play a Unit (cost ≤3) from your trash"
+        },
+        "to": "field"
+      },
+      {
+        "action": "PlayFromZone",
+        "target": {
+          "type": "Unit",
+          "side": "self",
+          "zone": "trash",
+          "filter": {
+            "cost_lte": 3
+          },
+          "chooser": "controller",
+          "optional": true,
+          "prompt": "We Gotta Live Together: play a second Unit (cost ≤3) from your trash"
+        },
+        "to": "field"
+      }
+    ]
+  },
+  {
+    "card_id": "WNTC-138",
+    "onPlay": [
+      {
+        "action": "If",
+        "cond": {
+          "cond": "Compare",
+          "lhs": {
+            "op": "street_cred",
+            "side": "self"
+          },
+          "op": "<",
+          "rhs": {
+            "op": "street_cred",
+            "side": "opponent"
+          }
+        },
+        "then": [
+          {
+            "action": "GrantTempPower",
+            "target": {
+              "type": "Unit",
+              "side": "opponent",
+              "quantifier": "all"
+            },
+            "amount": -5
+          },
+          {
+            "action": "BottomDeckFromField",
+            "target": {
+              "type": "Unit",
+              "side": "opponent",
+              "quantifier": "all",
+              "filter": {
+                "power_eq": 0
+              }
+            }
+          }
+        ],
+        "else": [
+          {
+            "action": "Optional",
+            "prompt": "Towerfall: give all rival Units -5 power? (No = bottom-deck all rival Units with power 0)",
+            "body": [
+              {
+                "action": "GrantTempPower",
+                "target": {
+                  "type": "Unit",
+                  "side": "opponent",
+                  "quantifier": "all"
+                },
+                "amount": -5
+              }
+            ],
+            "otherwise": [
+              {
+                "action": "BottomDeckFromField",
+                "target": {
+                  "type": "Unit",
+                  "side": "opponent",
+                  "quantifier": "all",
+                  "filter": {
+                    "power_eq": 0
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]

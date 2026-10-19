@@ -1,0 +1,17 @@
+{
+  "choose_gig":                   { "zone": "gigs",         "response": "iid",           "ui": "modal",   "hint": "Click a gig." },
+  "choose_unit":                  { "zone": "field",        "response": "iid",           "ui": "click",   "hint": "Click a unit." },
+  "choose_legend":                { "zone": "legends",      "response": "iid",           "ui": "click",   "hint": "Click a legend." },
+  "choose_gear":                  { "zone": "equipped",     "response": "iid",           "ui": "click",   "hint": "Click a gear." },
+  "choose_card_in_hand":          { "zone": "hand",         "response": "iid",           "ui": "click",   "hint": "Click a card in hand." },
+  "choose_card_in_trash":         { "zone": "trash",        "response": "iid",           "ui": "click",   "hint": "Click a card in trash." },
+  "choose_card_in_hand_or_trash": { "zone": "hand_or_trash","response": "iid",           "ui": "click",   "hint": "Click a card in hand or trash." },
+  "choose_card_in_deck":          { "zone": "deck",         "response": "iid",           "ui": "click",   "hint": "Click a card in deck." },
+  "choose_in_play":               { "zone": "in_play",      "response": "iid",           "ui": "click",   "hint": "Click a unit or legend." },        
+  "choose_amount":                { "zone": null,           "response": "amount",        "ui": "buttons", "hint": "Choose an amount." },
+  "choose_card_type":             { "zone": null,           "response": "card_type",     "ui": "buttons", "hint": "Choose a card type." },
+  "acknowledge_reveal":           { "zone": null,           "response": "acknowledge",   "ui": "modal",   "hint": "Revealed card." },
+  "confirm_optional":             { "zone": null,           "response": "accept",        "ui": "confirm", "hint": "Optional effect." },
+  "choose_from_top_n":            { "zone": null,           "response": "selected_iids", "ui": "modal",   "hint": "Choose cards." },
+  "choose_units":                 { "zone": "field",        "response": "selected_iids", "ui": "click",   "hint": "Click units to toggle." }
+}
